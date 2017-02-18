@@ -13,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by dnwiebe on 2/17/17.
  */
-public class SimpleExampleTest {
+public class SimpleExample {
 
   private interface SimpleExampleConfiguration {
     String someString ();

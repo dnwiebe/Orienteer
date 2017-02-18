@@ -18,6 +18,21 @@ public class Orienteer {
   Fragmenter fragmenter = new Fragmenter ();
   Logger logger = Logger.getLogger (Orienteer.class.getName ());
 
+  public void addConverter (Converter converter) {
+    addConverter (converter, null);
+  }
+
+  public <T extends Lookup> void addConverter (Converter converter, Class<T> lookupType) {
+    try {
+      Method convertMethod = converter.getClass ().getMethod ("convert", String.class);
+      Class targetType = convertMethod.getReturnType ();
+      converters.add (targetType, lookupType, converter);
+    }
+    catch (Exception e) {
+      throw new IllegalStateException (e);
+    }
+  }
+
   public <T> T make (Class<T> singletonInterface, Lookup... lookups) {
     validateInterface (singletonInterface);
     return (T)Proxy.newProxyInstance (
