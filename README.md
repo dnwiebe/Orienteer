@@ -99,12 +99,11 @@ the singleton interface for which Orienteer provides the
 implementation.
 
 For example, the method name above is ```weatherServiceBaseUrl```.
-That means that the property name will have to be
-```weather.service.base.url``` and the environment variable
+That means that the property name will have to be ```weather.service.base.url``` 
+and the environment variable
 will have to be ```WEATHER_SERVICE_BASE_URL``` or else their
 values won't be used.  (In case you're curious, in the map
-of defaults, the key would have to be
-```WeatherServiceBaseUrl```.)
+of defaults, the key would have to be ```WeatherServiceBaseUrl```.)
 
 ###Orienteer Is Extensible
 Orienteer has two major limitations.
@@ -121,8 +120,7 @@ certain small number of sources (default maps, environment
 variables, property files, and so on).
 
 However, it is quite simple to provide both your own
-configuration types and your own Lookups.  See the
-```CustomDataTypeExample.java``` and the
-```CustomLookupExample.java``` files in the
-```com.dnwiebe.orienteer.examples``` package for example
+configuration types and your own Lookups.  See the ```CustomDataTypeExample.java```
+and the ```CustomLookupExample.java``` files in 
+the ```com.dnwiebe.orienteer.examples``` package for example
 code.
