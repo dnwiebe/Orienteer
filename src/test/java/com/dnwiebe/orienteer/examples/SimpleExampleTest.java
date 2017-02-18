@@ -30,7 +30,7 @@ public class SimpleExampleTest {
     map.put ("SomeLong", "9080706050403020100");
     map.put ("SomeBoolean", "true");
 
-    SimpleExampleConfiguration configurationSingleton = Orienteer.make (SimpleExampleConfiguration.class,
+    SimpleExampleConfiguration configurationSingleton = new Orienteer ().make (SimpleExampleConfiguration.class,
         new MapLookup(map)
     );
 

@@ -25,7 +25,7 @@ public class OrienteerTest {
   @Test
   public void rejectsClassThatIsNotInterface () {
     try {
-      Orienteer.make (NotAnInterface.class);
+      new Orienteer ().make (NotAnInterface.class);
       fail ();
     }
     catch (IllegalArgumentException e) {
@@ -41,7 +41,7 @@ public class OrienteerTest {
   @Test
   public void rejectsInterfaceWithMethodTakingParameters () {
     try {
-      Orienteer.make (MethodTakesAParameter.class);
+      new Orienteer ().make (MethodTakesAParameter.class);
       fail ();
     }
     catch (IllegalArgumentException e) {
@@ -58,7 +58,7 @@ public class OrienteerTest {
   public void rejectsInterfaceWithMethodReturningUnsupportedType () {
     Converters converters = new Converters();
     try {
-      Orienteer.make (MethodReturnsBadType.class);
+      new Orienteer ().make (MethodReturnsBadType.class);
       fail ();
     }
     catch (IllegalArgumentException e) {
@@ -79,129 +79,104 @@ public class OrienteerTest {
 
   @Test
   public void acceptsInterfaceWithSingleGoodMethod () {
-    Orienteer.make (GoodInterface.class);
+    new Orienteer ().make (GoodInterface.class);
 
     // no exception: test passes
   }
 
   @Test
   public void worksWithTwoConvertersWhereTheFirstFindsTheValueAndTheSecondDoesnt () {
+    Orienteer orienteer = new Orienteer ();
     Orienteer.Fragmenter fragmenter = mock (Orienteer.Fragmenter.class);
     List<String> fragmentedName = Arrays.asList ("fragmented", "name");
     when (fragmenter.fragment ("goodMethod")).thenReturn (fragmentedName);
-    Orienteer.Fragmenter OLD_FRAGMENTER = Orienteer.FRAGMENTER;
-    Orienteer.FRAGMENTER = fragmenter;
+    orienteer.fragmenter = fragmenter;
     Logger logger = mock (Logger.class);
-    Logger OLD_LOGGER = Orienteer.LOGGER;
-    Orienteer.LOGGER = logger;
-    try {
-      Lookup first = mock(Lookup.class);
-      when(first.getName ()).thenReturn ("First Lookup");
-      when(first.nameFromFragments(fragmentedName)).thenReturn("firstProperty");
-      when(first.valueFromName("firstProperty", GoodInterface.class)).thenReturn("firstValue");
-      Lookup second = mock(Lookup.class);
-      when(second.getName ()).thenReturn ("Second Lookup");
-      when(second.nameFromFragments(fragmentedName)).thenReturn("secondProperty");
-      when(second.valueFromName("secondProperty", GoodInterface.class)).thenReturn(null);
+    orienteer.logger = logger;
+    Lookup first = mock(Lookup.class);
+    when(first.getName ()).thenReturn ("First Lookup");
+    when(first.nameFromFragments(fragmentedName)).thenReturn("firstProperty");
+    when(first.valueFromName("firstProperty", GoodInterface.class)).thenReturn("firstValue");
+    Lookup second = mock(Lookup.class);
+    when(second.getName ()).thenReturn ("Second Lookup");
+    when(second.nameFromFragments(fragmentedName)).thenReturn("secondProperty");
+    when(second.valueFromName("secondProperty", GoodInterface.class)).thenReturn(null);
 
-      GoodInterface singleton = Orienteer.make(GoodInterface.class, first, second);
+    GoodInterface singleton = orienteer.make(GoodInterface.class, first, second);
 
-      assertEquals("firstValue", singleton.goodMethod());
-      verify (logger).info ("Seeking configuration value for 'goodMethod'");
-      verify (logger).info ("  Consulting First Lookup for 'firstProperty': found 'firstValue'");
-      verify (logger).info ("Configured: " + GoodInterface.class.getName () + ".goodMethod() -> firstValue");
-    }
-    finally {
-      Orienteer.FRAGMENTER = OLD_FRAGMENTER;
-      Orienteer.LOGGER = OLD_LOGGER;
-    }
+    assertEquals("firstValue", singleton.goodMethod());
+    verify (logger).info ("Seeking configuration value for 'goodMethod'");
+    verify (logger).info ("  Consulting First Lookup for 'firstProperty': found 'firstValue'");
+    verify (logger).info ("Configured: " + GoodInterface.class.getName () + ".goodMethod() -> firstValue");
   }
 
   @Test
   public void worksWithTwoConvertersWhereTheFirstDoesntFindTheValueButTheSecondDoes () {
+    Orienteer orienteer = new Orienteer ();
     Orienteer.Fragmenter fragmenter = mock (Orienteer.Fragmenter.class);
     List<String> fragmentedName = Arrays.asList ("fragmented", "name");
     when (fragmenter.fragment ("goodMethod")).thenReturn (fragmentedName);
-    Orienteer.Fragmenter OLD_FRAGMENTER = Orienteer.FRAGMENTER;
-    Orienteer.FRAGMENTER = fragmenter;
+    orienteer.fragmenter = fragmenter;
     Logger logger = mock (Logger.class);
-    Logger OLD_LOGGER = Orienteer.LOGGER;
-    Orienteer.LOGGER = logger;
-    try {
-      Lookup first = mock(Lookup.class);
-      when(first.getName ()).thenReturn ("First Lookup");
-      when(first.nameFromFragments(fragmentedName)).thenReturn("firstProperty");
-      when(first.valueFromName("firstProperty", GoodInterface.class)).thenReturn(null);
-      Lookup second = mock(Lookup.class);
-      when(second.getName ()).thenReturn ("Second Lookup");
-      when(second.nameFromFragments(fragmentedName)).thenReturn("secondProperty");
-      when(second.valueFromName("secondProperty", GoodInterface.class)).thenReturn("secondValue");
+    orienteer.logger = logger;
+    Lookup first = mock(Lookup.class);
+    when(first.getName ()).thenReturn ("First Lookup");
+    when(first.nameFromFragments(fragmentedName)).thenReturn("firstProperty");
+    when(first.valueFromName("firstProperty", GoodInterface.class)).thenReturn(null);
+    Lookup second = mock(Lookup.class);
+    when(second.getName ()).thenReturn ("Second Lookup");
+    when(second.nameFromFragments(fragmentedName)).thenReturn("secondProperty");
+    when(second.valueFromName("secondProperty", GoodInterface.class)).thenReturn("secondValue");
 
-      GoodInterface singleton = Orienteer.make(GoodInterface.class, first, second);
+    GoodInterface singleton = orienteer.make(GoodInterface.class, first, second);
 
-      assertEquals("secondValue", singleton.goodMethod());
-      verify (logger).info ("Seeking configuration value for 'goodMethod'");
-      verify (logger).info ("  Consulting First Lookup for 'firstProperty': not found");
-      verify (logger).info ("  Consulting Second Lookup for 'secondProperty': found 'secondValue'");
-      verify (logger).info ("Configured: " + GoodInterface.class.getName () + ".goodMethod() -> secondValue");
-    }
-    finally {
-      Orienteer.FRAGMENTER = OLD_FRAGMENTER;
-      Orienteer.LOGGER = OLD_LOGGER;
-    }
+    assertEquals("secondValue", singleton.goodMethod());
+    verify (logger).info ("Seeking configuration value for 'goodMethod'");
+    verify (logger).info ("  Consulting First Lookup for 'firstProperty': not found");
+    verify (logger).info ("  Consulting Second Lookup for 'secondProperty': found 'secondValue'");
+    verify (logger).info ("Configured: " + GoodInterface.class.getName () + ".goodMethod() -> secondValue");
   }
 
   @Test
   public void worksWithOneConverterWhereTheValueIsUnknown () {
+    Orienteer orienteer = new Orienteer ();
     Orienteer.Fragmenter fragmenter = mock (Orienteer.Fragmenter.class);
     List<String> fragmentedName = Arrays.asList ("fragmented", "name");
     when (fragmenter.fragment ("goodMethod")).thenReturn (fragmentedName);
-    Orienteer.Fragmenter OLD_FRAGMENTER = Orienteer.FRAGMENTER;
-    Orienteer.FRAGMENTER = fragmenter;
+    orienteer.fragmenter = fragmenter;
     Logger logger = mock (Logger.class);
-    Logger OLD_LOGGER = Orienteer.LOGGER;
-    Orienteer.LOGGER = logger;
-    try {
-      Lookup lookup = mock(Lookup.class);
-      when(lookup.getName ()).thenReturn ("Lookup");
-      when(lookup.nameFromFragments(fragmentedName)).thenReturn("property");
-      when(lookup.valueFromName("property", null)).thenReturn(null);
+    orienteer.logger = logger;
+    Lookup lookup = mock(Lookup.class);
+    when(lookup.getName ()).thenReturn ("Lookup");
+    when(lookup.nameFromFragments(fragmentedName)).thenReturn("property");
+    when(lookup.valueFromName("property", null)).thenReturn(null);
 
-      GoodInterface singleton = Orienteer.make(GoodInterface.class, lookup);
+    GoodInterface singleton = orienteer.make(GoodInterface.class, lookup);
 
-      assertEquals(null, singleton.goodMethod());
-      verify (logger).info ("Seeking configuration value for 'goodMethod'");
-      verify (logger).info ("  Consulting Lookup for 'property': not found");
-      verify (logger).warning ("NOT CONFIGURED: " + GoodInterface.class.getName () + ".goodMethod()");
-    }
-    finally {
-      Orienteer.FRAGMENTER = OLD_FRAGMENTER;
-      Orienteer.LOGGER = OLD_LOGGER;
-    }
+    assertEquals(null, singleton.goodMethod());
+    verify (logger).info ("Seeking configuration value for 'goodMethod'");
+    verify (logger).info ("  Consulting Lookup for 'property': not found");
+    verify (logger).warning ("NOT CONFIGURED: " + GoodInterface.class.getName () + ".goodMethod()");
   }
 
   @Test
   public void worksWithOneConverterEvenAfterConverterIsRemovedFromArray () {
+    Orienteer orienteer = new Orienteer ();
     Orienteer.Fragmenter fragmenter = mock (Orienteer.Fragmenter.class);
     List<String> fragmentedName = Arrays.asList ("fragmented", "name");
     when (fragmenter.fragment ("goodMethod")).thenReturn (fragmentedName);
-    Orienteer.Fragmenter OLD_FRAGMENTER = Orienteer.FRAGMENTER;
-    Orienteer.FRAGMENTER = fragmenter;
-    try {
-      Lookup lookup = mock(Lookup.class);
-      when(lookup.getName ()).thenReturn ("Lookup");
-      when(lookup.nameFromFragments(fragmentedName)).thenReturn("property");
-      when(lookup.valueFromName("property", GoodInterface.class)).thenReturn("value");
-      Lookup[] lookups = new Lookup[] {lookup};
-      GoodInterface singleton = Orienteer.make(GoodInterface.class, lookups);
+    orienteer.fragmenter = fragmenter;
+    orienteer.logger = mock (Logger.class);
+    Lookup lookup = mock(Lookup.class);
+    when(lookup.getName ()).thenReturn ("Lookup");
+    when(lookup.nameFromFragments(fragmentedName)).thenReturn("property");
+    when(lookup.valueFromName("property", GoodInterface.class)).thenReturn("value");
+    Lookup[] lookups = new Lookup[] {lookup};
+    GoodInterface singleton = orienteer.make(GoodInterface.class, lookups);
 
-      lookups[0] = null;
+    lookups[0] = null;
 
-      assertEquals("value", singleton.goodMethod());
-    }
-    finally {
-      Orienteer.FRAGMENTER = OLD_FRAGMENTER;
-    }
+    assertEquals("value", singleton.goodMethod());
   }
 
   @Test

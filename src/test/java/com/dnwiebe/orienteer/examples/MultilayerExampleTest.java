@@ -42,7 +42,7 @@ public class MultilayerExampleTest {
 
   @Test
   public void mapThenProperties () {
-    ConfigurationSingleton subject = Orienteer.make (ConfigurationSingleton.class,
+    ConfigurationSingleton subject = new Orienteer ().make (ConfigurationSingleton.class,
         new MapLookup(configMap),
         new PropertiesLookup(properties)
     );
@@ -55,7 +55,7 @@ public class MultilayerExampleTest {
 
   @Test
   public void propertiesThenMap () {
-    ConfigurationSingleton subject = Orienteer.make (ConfigurationSingleton.class,
+    ConfigurationSingleton subject = new Orienteer ().make (ConfigurationSingleton.class,
         new PropertiesLookup(properties),
         new MapLookup(configMap)
     );
@@ -68,7 +68,7 @@ public class MultilayerExampleTest {
 
   @Test
   public void propertiesThenMapThenFailure () {
-    ConfigurationSingleton subject = Orienteer.make (ConfigurationSingleton.class,
+    ConfigurationSingleton subject = new Orienteer ().make (ConfigurationSingleton.class,
         new PropertiesLookup(properties),
         new MapLookup(configMap),
         new FailingLookup()
