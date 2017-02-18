@@ -110,36 +110,58 @@ public class Orienteer {
   }
 
   static class Fragmenter {
+
     List<String> fragment (String name) {
-      List<String> result = new ArrayList<String>();
-      StringBuilder wordSoFar = new StringBuilder ();
-      int p = 0;
-      int accumulatedUppers = 1;
-      while (p < name.length ()) {
-        char c = name.charAt (p);
-        if (Character.isUpperCase (c)) {
-          if (accumulatedUppers == 0) {
-            result.add (wordSoFar.toString ());
-            wordSoFar = new StringBuilder ();
-          }
-          wordSoFar.append (c);
-          accumulatedUppers++;
-        }
-        else {
-          if (accumulatedUppers > 1) {
-            char firstOfThisWord = wordSoFar.charAt (wordSoFar.length () - 1);
-            wordSoFar.setLength (wordSoFar.length () - 1);
-            result.add (wordSoFar.toString ());
-            wordSoFar = new StringBuilder ();
-            wordSoFar.append (firstOfThisWord);
-          }
-          wordSoFar.append(c);
-          accumulatedUppers = 0;
-        }
-        p++;
+      FragmentationState state = new FragmentationState();
+      for (int i = 0; i < name.length (); i++) {
+        state.acceptCharacter(name.charAt (i));
       }
+      state.finish();
+      return state.getResult ();
+    }
+  }
+
+  static private class FragmentationState {
+    private int accumulatedUppers = 1;
+    private StringBuilder wordSoFar = new StringBuilder ();
+    private List<String> result = new ArrayList<String> ();
+
+    public void acceptCharacter(char c) {
+      if (Character.isUpperCase (c)) {
+        processUpperCaseCharacter(c);
+      }
+      else {
+        processLowerCaseCharacter(c);
+      }
+    }
+
+    public void finish() {
       result.add (wordSoFar.toString ());
+    }
+
+    public List<String> getResult () {
       return result;
+    }
+
+    private void processLowerCaseCharacter(char c) {
+      if (accumulatedUppers > 1) {
+        char firstOfThisWord = wordSoFar.charAt (wordSoFar.length () - 1);
+        wordSoFar.setLength (wordSoFar.length () - 1);
+        result.add (wordSoFar.toString ());
+        wordSoFar = new StringBuilder ();
+        wordSoFar.append (firstOfThisWord);
+      }
+      wordSoFar.append(c);
+      accumulatedUppers = 0;
+    }
+
+    private void processUpperCaseCharacter(char c) {
+      if (accumulatedUppers == 0) {
+        result.add (wordSoFar.toString ());
+        wordSoFar = new StringBuilder ();
+      }
+      wordSoFar.append (c);
+      accumulatedUppers++;
     }
   }
 }

@@ -83,7 +83,7 @@ public class MultilayerExampleTest {
     }
     catch (IllegalStateException e) {
       assertEquals ("No configuration value found anywhere for property 'fourthField' of " +
-          "com.dnwiebe.orienteer.examples.MultilayerExampleTest$ConfigurationSingleton", e.getMessage ());
+          ConfigurationSingleton.class.getName(), e.getMessage ());
     }
   }
 }
