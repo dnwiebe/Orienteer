@@ -19,7 +19,7 @@ public class LongConverterTest {
   }
 
   @Test
-  public void convertsNullNumber () {
+  public void convertsNullNumber () throws Exception {
 
     Long result = subject.convert (null);
 
@@ -27,7 +27,7 @@ public class LongConverterTest {
   }
 
   @Test
-  public void convertsNonNullNumber () {
+  public void convertsNonNullNumber () throws Exception {
 
     Long result = subject.convert ("-90807060504030201");
 
@@ -35,7 +35,7 @@ public class LongConverterTest {
   }
 
   @Test
-  public void complainsAsExpectedForBadlyFormattedNumber () {
+  public void complainsAsExpectedForBadlyFormattedNumber () throws Exception {
     try {
       subject.convert ("Booga");
       fail ();

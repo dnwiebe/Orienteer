@@ -6,6 +6,10 @@ import java.util.Map;
 /**
  * Created by dnwiebe on 2/17/17.
  */
+
+/**
+ * Looks up values in a supplied Map<String, String>.  Method name abcDEFGhi becomes AbcDEFGhi.
+ */
 public class MapLookup extends Lookup {
 
   private Map<String, String> map;

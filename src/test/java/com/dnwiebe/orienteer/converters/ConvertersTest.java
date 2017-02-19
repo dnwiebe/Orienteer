@@ -49,7 +49,7 @@ public class ConvertersTest {
   }
 
   @Test
-  public void findsDefaultConvertersUponConstruction () {
+  public void findsDefaultConvertersUponConstruction () throws Exception {
     checkConverter (String.class, "Booga", "Booga");
     checkConverter (Integer.class, "42", 42);
     checkConverter (Long.class, "90807060504030201", 90807060504030201L);
@@ -120,7 +120,7 @@ public class ConvertersTest {
     assertEquals (expected, result);
   }
 
-  private <T> void checkConverter (Class<T> targetType, String input, T expectedOutput) {
+  private <T> void checkConverter (Class<T> targetType, String input, T expectedOutput) throws Exception {
     Converter<T> converter = subject.find (targetType, null);
     T actualOutput = converter.convert (input);
     assertEquals (expectedOutput, actualOutput);

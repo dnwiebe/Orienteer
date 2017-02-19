@@ -13,15 +13,32 @@ import java.util.logging.Logger;
 /**
  * Created by dnwiebe on 2/17/17.
  */
+
+/**
+ * Main public class for Orienteer.
+ */
 public class Orienteer {
   Converters converters = new Converters ();
   Fragmenter fragmenter = new Fragmenter ();
   Logger logger = Logger.getLogger (Orienteer.class.getName ());
 
+  /**
+   * Add a type Converter for general use to enable a new return type to be mentioned in the configuration interface
+   * passed to Orienteer.make().  If you add multiple Converters that all produce the same type, only the last will be
+   * used.
+   * @param converter Custom Converter for the new type.
+   */
   public void addConverter (Converter converter) {
     addConverter (converter, null);
   }
 
+  /**
+   * Add a type Converter for use only on values returned from a particular kind of Lookup, to enable a new return type
+   * to be mentioned in the configuration interface passed to Orienteer.make().  If you add multiple Converters that
+   * all produce the same type for the same Lookup class, only the last will be used.
+   * @param converter Custom Converter for the new type.
+   * @param lookupType Only use this converter for configuration values from a Lookup of this type.
+   */
   public <T extends Lookup> void addConverter (Converter converter, Class<T> lookupType) {
     try {
       Method convertMethod = converter.getClass ().getMethod ("convert", String.class);
@@ -33,6 +50,23 @@ public class Orienteer {
     }
   }
 
+  /**
+   * Manufacture and return an object of a class that implements the provided interface, such that methods called
+   * on that object will produce the highest-priority configuration values available for them.
+   *
+   * The provided interface must contain only methods that accept no parameters and return object (not primitive or
+   * void) types.
+   *
+   * Immediately upon creating the object, Orienteer will call all its methods to make sure seeking values does not
+   * throw exceptions.  However, if a value is readily provided at make() time, but is not as forthcoming when it is
+   * sought later, you may get exceptions at runtime past startup.
+   *
+   * @param singletonInterface Interface for configuration object
+   * @param lookups Lookups to be consulted in order of priority.  If a particular Lookup successfully provides a
+   *                configuration value, later-specified Lookups are not consulted.
+   * @return Object of a generated class that implements singletonInterface.
+   */
+  // TODO: Add code to retrieve every configuration value after construction.
   public <T> T make (Class<T> singletonInterface, Lookup... lookups) {
     validateInterface (singletonInterface);
     return (T)Proxy.newProxyInstance (
@@ -105,7 +139,7 @@ public class Orienteer {
       return null;
     }
 
-    private Object processValue (Method method, Lookup lookup, String name, String value) {
+    private Object processValue (Method method, Lookup lookup, String name, String value) throws Exception {
       String logPreamble = "  Consulting " + lookup.getName () + " for '" + name + "': ";
       if (value == null) {
         logger.info (logPreamble + "not found");

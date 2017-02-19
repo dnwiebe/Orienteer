@@ -19,7 +19,7 @@ public class IntegerConverterTest {
   }
 
   @Test
-  public void convertsNullNumber () {
+  public void convertsNullNumber () throws Exception {
 
     Integer result = subject.convert (null);
 
@@ -27,7 +27,7 @@ public class IntegerConverterTest {
   }
 
   @Test
-  public void convertsNonNullNumber () {
+  public void convertsNonNullNumber () throws Exception {
 
     Integer result = subject.convert ("-42");
 
@@ -35,7 +35,7 @@ public class IntegerConverterTest {
   }
 
   @Test
-  public void complainsAsExpectedForBadlyFormattedNumber () {
+  public void complainsAsExpectedForBadlyFormattedNumber () throws Exception {
     try {
       subject.convert ("Booga");
       fail ();

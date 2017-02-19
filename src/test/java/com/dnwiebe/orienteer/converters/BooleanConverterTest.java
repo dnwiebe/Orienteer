@@ -21,7 +21,7 @@ public class BooleanConverterTest {
   }
 
   @Test
-  public void convertsNullValue () {
+  public void convertsNullValue () throws Exception {
 
     Boolean result = subject.convert (null);
 
@@ -29,7 +29,7 @@ public class BooleanConverterTest {
   }
 
   @Test
-  public void convertsStringBeginningWithT () {
+  public void convertsStringBeginningWithT () throws Exception {
 
     Boolean result = subject.convert ("T string");
 
@@ -37,7 +37,7 @@ public class BooleanConverterTest {
   }
 
   @Test
-  public void convertsStringBeginningWithY () {
+  public void convertsStringBeginningWithY () throws Exception {
 
     Boolean result = subject.convert ("Y string");
 
@@ -45,7 +45,7 @@ public class BooleanConverterTest {
   }
 
   @Test
-  public void convertsStringBeginningWithNonZeroDigit () {
+  public void convertsStringBeginningWithNonZeroDigit () throws Exception {
     String[] inputs = {"12", "22", "32", "42", "52", "62", "72", "82", "92"};
     for (String input : inputs) {
       Boolean result = subject.convert (input);
@@ -54,7 +54,7 @@ public class BooleanConverterTest {
   }
 
   @Test
-  public void convertsStringBeginningWithF () {
+  public void convertsStringBeginningWithF () throws Exception {
 
     Boolean result = subject.convert ("F string");
 
@@ -62,7 +62,7 @@ public class BooleanConverterTest {
   }
 
   @Test
-  public void convertsStringBeginningWithN () {
+  public void convertsStringBeginningWithN () throws Exception {
 
     Boolean result = subject.convert ("N string");
 
@@ -70,7 +70,7 @@ public class BooleanConverterTest {
   }
 
   @Test
-  public void convertsStringBeginningWithZeroDigit () {
+  public void convertsStringBeginningWithZeroDigit () throws Exception {
 
     Boolean result = subject.convert ("0 string");
 
@@ -78,7 +78,7 @@ public class BooleanConverterTest {
   }
 
   @Test
-  public void complainsAsExpectedForBadlyFormattedValue () {
+  public void complainsAsExpectedForBadlyFormattedValue () throws Exception {
     try {
       subject.convert ("Booga");
       fail ();
@@ -89,7 +89,7 @@ public class BooleanConverterTest {
   }
 
   @Test
-  public void complainsAsExpectedForEmptyValue () {
+  public void complainsAsExpectedForEmptyValue () throws Exception {
     try {
       subject.convert ("");
       fail ();

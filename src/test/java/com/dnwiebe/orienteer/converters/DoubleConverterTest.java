@@ -19,7 +19,7 @@ public class DoubleConverterTest {
   }
 
   @Test
-  public void convertsNullNumber () {
+  public void convertsNullNumber () throws Exception {
 
     Double result = subject.convert (null);
 
@@ -27,7 +27,7 @@ public class DoubleConverterTest {
   }
 
   @Test
-  public void convertsNonNullNumber () {
+  public void convertsNonNullNumber () throws Exception {
 
     Double result = subject.convert ("34.25");
 
@@ -35,7 +35,7 @@ public class DoubleConverterTest {
   }
 
   @Test
-  public void complainsAsExpectedForBadlyFormattedNumber () {
+  public void complainsAsExpectedForBadlyFormattedNumber () throws Exception {
     try {
       subject.convert ("Booga");
       fail ();

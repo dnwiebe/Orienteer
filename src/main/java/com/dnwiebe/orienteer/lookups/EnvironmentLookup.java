@@ -5,6 +5,10 @@ import java.util.List;
 /**
  * Created by dnwiebe on 2/17/17.
  */
+
+/**
+ * Looks up values in the environment.  Method name abcDEFGhi becomes ABC_DEF_GHI.
+ */
 public class EnvironmentLookup extends MapLookup {
 
   public EnvironmentLookup () {

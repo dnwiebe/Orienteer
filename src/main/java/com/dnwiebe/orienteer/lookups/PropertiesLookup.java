@@ -6,9 +6,15 @@ import java.util.Properties;
 /**
  * Created by dnwiebe on 2/17/17.
  */
+
+/**
+ * Looks up values in the supplied Properties object.  Method name abcDEFGhi becomes abc.def.ghi.
+ */
 public class PropertiesLookup extends Lookup {
 
   private final Properties properties;
+
+  // TODO: Add constructors for resource name, Reader, and possibly InputStream.
 
   public PropertiesLookup (Properties properties) {
     this.properties = properties;
