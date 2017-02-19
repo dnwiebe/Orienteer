@@ -62,11 +62,11 @@ You'd do that like this:
 
 ```java
 ConfigurationSingleton singleton = new Orienteer ().make (ConfigurationSingleton.class,
-  new SystemPropsLookup (),
-  new EnvironmentLookup (),
-  new PropertiesLookup ("config/props/config.properties")),
-  new MapLookup (defaults),
-  new FailingLookup ()
+  new SystemPropsLookup (), // Look in system properties first
+  new EnvironmentLookup (), // then in the environment
+  new PropertiesLookup ("config/props/config.properties")), // then in this resource file
+  new MapLookup (defaults), // then in the defaults map
+  new FailingLookup () // and finally blow up if no value is found
 );
 ```
 
@@ -91,7 +91,7 @@ but if you wanted to put the value in an environment variable
 it had to be ```WEATH_SVC_URL```.
 
 Orienteer makes that sort of inconsistency much more difficult
-(although it can be done, if you insist, which we hope you
+(although it can still be done, if you insist, which we hope you
 won't).  Each configuration source (or _Lookup_) that Orienteer 
 knows about defines its own naming conventions, and applies
 them based on the names of the configuration properties in
