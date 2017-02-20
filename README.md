@@ -30,9 +30,10 @@ properties file.
 ###Orienteer Can Help
 Orienteer is designed for this situation.
 
-With Orienteer, you can define a Java interface (or a Scala
-trait, if you prefer) that is full of methods that provide
-configuration values of various types.  For example:
+With Orienteer, you can define an interface in Java or
+Groovy (or a trait in Scala) that is full of methods 
+that provide configuration values of various types.
+For example:
 
 ```java
 public interface ConfigurationSingleton {
