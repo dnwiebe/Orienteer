@@ -8,7 +8,7 @@ import java.util.Map;
  */
 
 /**
- * Looks up values in a supplied Map<String, String>.  Method name abcDEFGhi becomes AbcDEFGhi.
+ * Looks up values in a supplied Map&lt;String, String&gt;s.  Method name abcDEFGhi becomes AbcDEFGhi.
  */
 public class MapLookup extends Lookup {
 

@@ -31,6 +31,7 @@ public class Orienteer {
    * passed to Orienteer.make().  If you add multiple Converters that all produce the same type, only the last will be
    * used.
    * @param converter Custom Converter for the new type.
+   * @return Orienteer object for operation chaining.
    */
   public Orienteer addConverter (Converter converter) {
     return addConverter (converter, null);
@@ -42,6 +43,7 @@ public class Orienteer {
    * all produce the same type for the same Lookup class, only the last will be used.
    * @param converter Custom Converter for the new type.
    * @param lookupType Only use this converter for configuration values from a Lookup of this type.
+   * @return Orienteer object for operation chaining.
    */
   public <T extends Lookup> Orienteer addConverter (Converter converter, Class<T> lookupType) {
     try {
@@ -58,6 +60,7 @@ public class Orienteer {
   /**
    * Call this if for some reason you don't want make() to run its standard initial check to make sure all the
    * configuration values are readable.
+   * @return Orienteer object for operation chaining.
    */
   public Orienteer inhibitInitialCheck () {
     initialCheck = false;
