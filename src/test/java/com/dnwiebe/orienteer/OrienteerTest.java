@@ -1,6 +1,7 @@
 package com.dnwiebe.orienteer;
 
 import com.dnwiebe.orienteer.converters.Converters;
+import com.dnwiebe.orienteer.lookups.FailingLookup;
 import com.dnwiebe.orienteer.lookups.Lookup;
 import org.junit.Test;
 
@@ -10,9 +11,7 @@ import java.util.logging.Logger;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by dnwiebe on 2/17/17.
@@ -105,9 +104,9 @@ public class OrienteerTest {
     GoodInterface singleton = orienteer.make(GoodInterface.class, first, second);
 
     assertEquals("firstValue", singleton.goodMethod());
-    verify (logger).info ("Seeking configuration value for 'goodMethod'");
-    verify (logger).info ("  Consulting First Lookup for 'firstProperty': found 'firstValue'");
-    verify (logger).info ("Configured: " + GoodInterface.class.getName () + ".goodMethod() -> firstValue");
+    verify (logger, atLeastOnce ()).info ("Seeking configuration value for 'goodMethod'");
+    verify (logger, atLeastOnce ()).info ("  Consulting First Lookup for 'firstProperty': found 'firstValue'");
+    verify (logger, atLeastOnce ()).info ("Configured: " + GoodInterface.class.getName () + ".goodMethod() -> firstValue");
   }
 
   @Test
@@ -131,10 +130,10 @@ public class OrienteerTest {
     GoodInterface singleton = orienteer.make(GoodInterface.class, first, second);
 
     assertEquals("secondValue", singleton.goodMethod());
-    verify (logger).info ("Seeking configuration value for 'goodMethod'");
-    verify (logger).info ("  Consulting First Lookup for 'firstProperty': not found");
-    verify (logger).info ("  Consulting Second Lookup for 'secondProperty': found 'secondValue'");
-    verify (logger).info ("Configured: " + GoodInterface.class.getName () + ".goodMethod() -> secondValue");
+    verify (logger, atLeastOnce ()).info ("Seeking configuration value for 'goodMethod'");
+    verify (logger, atLeastOnce ()).info ("  Consulting First Lookup for 'firstProperty': not found");
+    verify (logger, atLeastOnce ()).info ("  Consulting Second Lookup for 'secondProperty': found 'secondValue'");
+    verify (logger, atLeastOnce ()).info ("Configured: " + GoodInterface.class.getName () + ".goodMethod() -> secondValue");
   }
 
   @Test
@@ -154,9 +153,9 @@ public class OrienteerTest {
     GoodInterface singleton = orienteer.make(GoodInterface.class, lookup);
 
     assertEquals(null, singleton.goodMethod());
-    verify (logger).info ("Seeking configuration value for 'goodMethod'");
-    verify (logger).info ("  Consulting Lookup for 'property': not found");
-    verify (logger).warning ("NOT CONFIGURED: " + GoodInterface.class.getName () + ".goodMethod()");
+    verify (logger, atLeastOnce ()).info ("Seeking configuration value for 'goodMethod'");
+    verify (logger, atLeastOnce ()).info ("  Consulting Lookup for 'property': not found");
+    verify (logger, atLeastOnce ()).warning ("NOT CONFIGURED: " + GoodInterface.class.getName () + ".goodMethod()");
   }
 
   @Test
@@ -177,6 +176,20 @@ public class OrienteerTest {
     lookups[0] = null;
 
     assertEquals("value", singleton.goodMethod());
+  }
+
+  @Test
+  public void verifiesAccessibilityOfFieldsDuringMake () {
+    Orienteer subject = new Orienteer ();
+    subject.logger = mock (Logger.class);
+
+    try {
+      subject.make (GoodInterface.class, new FailingLookup ());
+      fail ();
+    }
+    catch (IllegalStateException e) {
+      assertEquals ("Couldn't retrieve configurations: goodMethod", e.getMessage ());
+    }
   }
 
   @Test

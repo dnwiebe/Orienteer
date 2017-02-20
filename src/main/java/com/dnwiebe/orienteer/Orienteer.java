@@ -4,7 +4,10 @@ import com.dnwiebe.orienteer.converters.Converter;
 import com.dnwiebe.orienteer.converters.Converters;
 import com.dnwiebe.orienteer.lookups.Lookup;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.*;
@@ -20,6 +23,7 @@ import java.util.logging.Logger;
 public class Orienteer {
   Converters converters = new Converters ();
   Fragmenter fragmenter = new Fragmenter ();
+  boolean initialCheck = true;
   Logger logger = Logger.getLogger (Orienteer.class.getName ());
 
   /**
@@ -28,8 +32,8 @@ public class Orienteer {
    * used.
    * @param converter Custom Converter for the new type.
    */
-  public void addConverter (Converter converter) {
-    addConverter (converter, null);
+  public Orienteer addConverter (Converter converter) {
+    return addConverter (converter, null);
   }
 
   /**
@@ -39,7 +43,7 @@ public class Orienteer {
    * @param converter Custom Converter for the new type.
    * @param lookupType Only use this converter for configuration values from a Lookup of this type.
    */
-  public <T extends Lookup> void addConverter (Converter converter, Class<T> lookupType) {
+  public <T extends Lookup> Orienteer addConverter (Converter converter, Class<T> lookupType) {
     try {
       Method convertMethod = converter.getClass ().getMethod ("convert", String.class);
       Class targetType = convertMethod.getReturnType ();
@@ -48,6 +52,16 @@ public class Orienteer {
     catch (Exception e) {
       throw new IllegalStateException (e);
     }
+    return this;
+  }
+
+  /**
+   * Call this if for some reason you don't want make() to run its standard initial check to make sure all the
+   * configuration values are readable.
+   */
+  public Orienteer inhibitInitialCheck () {
+    initialCheck = false;
+    return this;
   }
 
   /**
@@ -66,14 +80,15 @@ public class Orienteer {
    *                configuration value, later-specified Lookups are not consulted.
    * @return Object of a generated class that implements singletonInterface.
    */
-  // TODO: Add code to retrieve every configuration value after construction.
   public <T> T make (Class<T> singletonInterface, Lookup... lookups) {
     validateInterface (singletonInterface);
-    return (T)Proxy.newProxyInstance (
+    T singleton = (T)Proxy.newProxyInstance (
         Orienteer.class.getClassLoader(),
         new Class[] {singletonInterface},
         new Handler (lookups)
     );
+    if (initialCheck) {verifyAccess (singletonInterface, singleton);}
+    return singleton;
   }
 
   private void validateInterface (Class singletonInterface) {
@@ -116,6 +131,44 @@ public class Orienteer {
           " interface takes a parameter. Methods on configuration interfaces must be parameterless."
       );
     }
+  }
+
+  private <T> void verifyAccess (Class<T> type, T singleton) {
+    Method[] methods = type.getMethods ();
+    List<String> problems = new ArrayList<String> ();
+    for (Method method : methods) {
+      try {
+        method.invoke (singleton);
+      }
+      catch (IllegalAccessException e) {
+        // never happen
+        throw new IllegalStateException (e);
+      }
+      catch (InvocationTargetException e) {
+        Throwable cause = e.getCause ();
+        logger.severe (dumpStackTrace (cause));
+        problems.add (method.getName ());
+      }
+    }
+    if (!problems.isEmpty ()) {
+      throw new IllegalStateException ("Couldn't retrieve configurations: " + join (problems));
+    }
+  }
+
+  private String dumpStackTrace (Throwable e) {
+    StringWriter sw = new StringWriter ();
+    PrintWriter pw = new PrintWriter (sw);
+    e.printStackTrace (pw);
+    return sw.toString ();
+  }
+
+  private String join (List<String> list) {
+    StringBuilder buf = new StringBuilder ();
+    for (String string : list) {
+      if (buf.length () > 0) {buf.append (", ");}
+      buf.append (string);
+    }
+    return buf.toString ();
   }
 
   private class Handler implements InvocationHandler {

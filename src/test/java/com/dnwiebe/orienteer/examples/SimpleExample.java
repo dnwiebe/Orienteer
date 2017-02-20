@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class SimpleExample {
 
-  private interface SimpleExampleConfiguration {
+  public interface SimpleExampleConfiguration {
     String someString ();
     Integer someInt ();
     Long someLong ();

@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class CustomLookupExample {
 
-  private interface ConfigurationSingleton {
+  public interface ConfigurationSingleton {
     String globalGreeting ();
     String localGreeting ();
     String surlyGreeting ();

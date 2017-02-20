@@ -29,7 +29,7 @@ public class CustomDataTypeExample {
     }
   }
 
-  private interface ConfigurationSingleton {
+  public interface ConfigurationSingleton {
     URL webServiceUrl ();
   }
 

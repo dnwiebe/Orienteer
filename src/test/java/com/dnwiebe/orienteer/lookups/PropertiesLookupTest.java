@@ -3,6 +3,8 @@ package com.dnwiebe.orienteer.lookups;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
+import java.io.StringReader;
 import java.util.Arrays;
 import java.util.Properties;
 
@@ -41,5 +43,24 @@ public class PropertiesLookupTest {
     assertEquals ("single value", single);
     assertEquals ("multi-fragment value", multi);
     assertEquals (null, none);
+  }
+
+  @Test
+  public void resourcePropertiesFileConstructor () {
+    PropertiesLookup subject = new PropertiesLookup ("properties/lookup.properties");
+
+    String result = subject.valueFromName ("brand", PropertiesLookupTest.class);
+
+    assertEquals ("Respironics", result);
+  }
+
+  @Test
+  public void inputStreamConstructor () {
+    ByteArrayInputStream istr = new ByteArrayInputStream ("brand: Respironics\n".getBytes());
+    PropertiesLookup subject = new PropertiesLookup (istr);
+
+    String result = subject.valueFromName ("brand", PropertiesLookupTest.class);
+
+    assertEquals ("Respironics", result);
   }
 }

@@ -1,5 +1,7 @@
 package com.dnwiebe.orienteer.lookups;
 
+import java.io.InputStream;
+import java.io.Reader;
 import java.util.List;
 import java.util.Properties;
 
@@ -14,7 +16,19 @@ public class PropertiesLookup extends Lookup {
 
   private final Properties properties;
 
-  // TODO: Add constructors for resource name, Reader, and possibly InputStream.
+  public PropertiesLookup (String resourceName) {
+    this (PropertiesLookup.class.getClassLoader ().getResourceAsStream (resourceName));
+  }
+
+  public PropertiesLookup (InputStream istr) {
+    properties = new Properties ();
+    try {
+      properties.load (istr);
+    }
+    catch (Exception e) {
+      throw new IllegalStateException (e);
+    }
+  }
 
   public PropertiesLookup (Properties properties) {
     this.properties = properties;

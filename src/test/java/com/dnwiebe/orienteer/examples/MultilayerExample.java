@@ -19,7 +19,7 @@ import static org.junit.Assert.fail;
  */
 public class MultilayerExample {
 
-  private interface ConfigurationSingleton {
+  public interface ConfigurationSingleton {
     String firstField ();
     String secondField ();
     String thirdField ();
@@ -68,7 +68,7 @@ public class MultilayerExample {
 
   @Test
   public void propertiesThenMapThenFailure () {
-    ConfigurationSingleton subject = new Orienteer ().make (ConfigurationSingleton.class,
+    ConfigurationSingleton subject = new Orienteer ().inhibitInitialCheck ().make (ConfigurationSingleton.class,
         new PropertiesLookup(properties),
         new MapLookup(configMap),
         new FailingLookup()
