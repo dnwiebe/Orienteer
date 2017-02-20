@@ -31,9 +31,9 @@ properties file.
 Orienteer is designed for this situation.
 
 With Orienteer, you can define an interface in Java or
-Groovy (or a trait in Scala) that is full of methods 
-that provide configuration values of various types.
-For example:
+Groovy (or a trait in Scala, or its equivalent in some other
+JVM language) that is full of methods that provide
+configuration values of various types. For example:
 
 ```java
 public interface ConfigurationSingleton {
@@ -78,10 +78,17 @@ various possible configuration sources in the order they were
 specified. If the search arrives at the FailingLookup, an
 exception with an appropriate message will be thrown.
 
+As the search for each value proceeds, console logs are
+generated showing where Orienteer is looking and whether it
+finds what it's looking for there.  If you have a configuration
+problem, you should be easily able to explore the console log
+for information about what happened.
+
 The moment the ```singleton``` is constructed, before you get
 a chance to see it, Orienteer will automatically try to 
-retrieve every field on it; if any of them can't be found
-in any source, you'll get that exception immediately.
+retrieve every field on it (unless you specifically inhibit
+this function); if one or more of them can't be found in any
+source, you'll get that exception immediately.
 
 ###Orienteer Is Opinionated
 Inconsistent naming is one of the bugaboos of configuration

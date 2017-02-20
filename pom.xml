@@ -5,6 +5,7 @@
     <groupId>com.dnwiebe</groupId>
     <artifactId>orienteer</artifactId>
     <version>0.2-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <scm>
         <developerConnection>scm:git:https://github.com/dnwiebe/Orienteer.git</developerConnection>
