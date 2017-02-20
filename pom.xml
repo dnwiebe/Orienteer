@@ -8,6 +8,10 @@
     <artifactId>orienteer</artifactId>
     <version>0.1-SNAPSHOT</version>
 
+    <scm>
+        <developerConnection>scm:git:https://github.com/dnwiebe/Orienteer.git</developerConnection>
+    </scm>
+
     <build>
         <plugins>
             <plugin>
@@ -15,6 +19,14 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.10.4</version>
                 <configuration>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <tagNameFormat>v@{project.version}</tagNameFormat>
                 </configuration>
             </plugin>
         </plugins>
