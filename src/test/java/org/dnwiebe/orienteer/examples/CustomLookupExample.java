@@ -21,7 +21,7 @@ public class CustomLookupExample {
     String surlyGreeting ();
   }
 
-  private class HardCodedLookup extends Lookup {
+  private class HardCodedLookupWithAnnoyingSingleQuotes extends Lookup {
 
     public String nameFromFragments(List<String> fragments) {
       // convert fragments to lower snake case
@@ -48,7 +48,7 @@ public class CustomLookupExample {
 
     ConfigurationSingleton singleton = subject.make (ConfigurationSingleton.class,
         new TestLookup("surlyGreeting", "Perhaps another time?"),
-        new HardCodedLookup ()
+        new HardCodedLookupWithAnnoyingSingleQuotes()
     );
 
     assertEquals ("'Hello, world!'", singleton.globalGreeting ());
@@ -65,11 +65,11 @@ public class CustomLookupExample {
   @Test
   public void canProvideACustomConverterForUseOnlyWithAParticularLookup () {
     Orienteer subject = new Orienteer ();
-    subject.addConverter (new ShaveOuterCharactersConverter(), HardCodedLookup.class);
+    subject.addConverter (new ShaveOuterCharactersConverter(), HardCodedLookupWithAnnoyingSingleQuotes.class);
 
     ConfigurationSingleton singleton = subject.make (ConfigurationSingleton.class,
         new TestLookup ("surlyGreeting", "Perhaps another time?"),
-        new HardCodedLookup ()
+        new HardCodedLookupWithAnnoyingSingleQuotes()
     );
 
     assertEquals ("Hello, world!", singleton.globalGreeting ());

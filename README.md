@@ -128,7 +128,9 @@ certain small number of sources (default maps, environment
 variables, property files, and so on).
 
 However, it is quite simple to provide both your own
-configuration types and your own Lookups.  See the ```CustomDataTypeExample.java```
-and the ```CustomLookupExample.java``` files in 
-the ```org.dnwiebe.orienteer.examples``` package of 
+configuration types and your own Lookups.  See the 
+[```CustomDataTypeExample.java```](https://github.com/dnwiebe/Orienteer/blob/master/src/test/java/org/dnwiebe/orienteer/examples/CustomDataTypeExample.java "CustomDataTypeExample.java")
+and the 
+[```CustomLookupExample.java```](https://github.com/dnwiebe/Orienteer/blob/master/src/test/java/org/dnwiebe/orienteer/examples/CustomLookupExample.java "CustomLookupExample.java")
+files in the ```org.dnwiebe.orienteer.examples``` package of 
 the ```test``` subtree for example code.

@@ -6,7 +6,6 @@ import org.dnwiebe.orienteer.lookups.Lookup;
 import org.dnwiebe.orienteer.lookups.TestLookup;
 import org.junit.Test;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import static org.junit.Assert.assertEquals;
@@ -19,13 +18,8 @@ import static org.junit.Assert.fail;
 public class CustomDataTypeExample {
 
   private static class URLConverter implements Converter<URL> {
-    public URL convert(String stringValue) {
-      try {
-        return new URL(stringValue);
-      }
-      catch (MalformedURLException e) {
-        throw new IllegalArgumentException (e);
-      }
+    public URL convert(String stringValue) throws Exception {
+      return new URL(stringValue);
     }
   }
 
