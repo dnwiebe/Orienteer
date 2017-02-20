@@ -130,5 +130,5 @@ variables, property files, and so on).
 However, it is quite simple to provide both your own
 configuration types and your own Lookups.  See the ```CustomDataTypeExample.java```
 and the ```CustomLookupExample.java``` files in 
-the ```org.dnwiebe.orienteer.examples``` package for example
-code.
+the ```org.dnwiebe.orienteer.examples``` package of 
+the ```test``` subtree for example code.
