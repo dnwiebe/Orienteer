@@ -1,7 +1,6 @@
 package com.dnwiebe.orienteer.converters;
 
 import com.dnwiebe.orienteer.lookups.Lookup;
-import javafx.util.Pair;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,7 +36,7 @@ public class Converters {
     Set<Class<?>> result = new HashSet<Class<?>>();
     Set<Pair<Class, Class>> pairs = map.keySet();
     for (Pair<Class, Class> pair : pairs) {
-      result.add (pair.getKey ());
+      result.add (pair.a ());
     }
     return result;
   }
@@ -49,6 +48,45 @@ public class Converters {
     if (targetType.isPrimitive ()) {
       throw new IllegalArgumentException("Converters do not support primitive types like '" + targetType.getName()
           + "', only object types");
+    }
+  }
+
+  static class Pair<A, B> {
+    private A _a;
+    private B _b;
+
+    public Pair (A a, B b) {
+      this._a = a;
+      this._b = b;
+    }
+
+    public A a () {return _a;}
+
+    public B b () {return _b;}
+
+    @Override
+    public boolean equals (Object o) {
+      if (o == this) {return true;}
+      if (o == null) {return false;}
+      if (!(o instanceof Pair)) {return false;}
+      Pair<A, B> that = (Pair<A, B>)o;
+      if (!matches (this.a (), that.a ())) {return false;}
+      if (!matches (this.b (), that.b ())) {return false;}
+      return true;
+    }
+
+    private boolean matches (Object a, Object b) {
+      if ((a == null) && (b != null)) {return false;}
+      if ((a != null) && (b == null)) {return false;}
+      if (a == null) {return true;}
+      return a.equals (b);
+    }
+
+    @Override
+    public int hashCode () {
+      int aCode = (a () == null) ? 0 : a ().hashCode ();
+      int bCode = (b () == null) ? 0 : b ().hashCode ();
+      return (aCode << 16) + bCode;
     }
   }
 }
