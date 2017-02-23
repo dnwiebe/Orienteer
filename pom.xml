@@ -19,16 +19,16 @@
         </license>
     </licenses>
 
-    <groupId>com.dnwiebe</groupId>
+    <groupId>org.dnwiebe</groupId>
     <artifactId>orienteer</artifactId>
-    <version>0.2</version>
+    <version>0.3-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <scm>
         <url>https://github.com/dnwiebe/Orienteer.git</url>
         <connection>scm:git:https://github.com/dnwiebe/Orienteer.git</connection>
         <developerConnection>scm:git:https://github.com/dnwiebe/Orienteer.git</developerConnection>
-        <tag>v0.2</tag>
+        <tag>v0.3</tag>
     </scm>
 
     <distributionManagement>
@@ -56,20 +56,6 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.6</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.10.4</version>
                 <configuration>
@@ -80,6 +66,20 @@
                         <phase>verify</phase>
                         <goals>
                             <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
                         </goals>
                     </execution>
                 </executions>
