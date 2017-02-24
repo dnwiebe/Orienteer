@@ -2,6 +2,7 @@ package org.dnwiebe.orienteer;
 
 import org.dnwiebe.orienteer.converters.Converter;
 import org.dnwiebe.orienteer.converters.Converters;
+import org.dnwiebe.orienteer.helpers.Fragmenter;
 import org.dnwiebe.orienteer.lookups.Lookup;
 
 import java.io.PrintWriter;
@@ -88,7 +89,7 @@ public class Orienteer {
     T singleton = (T)Proxy.newProxyInstance (
         Orienteer.class.getClassLoader(),
         new Class[] {singletonInterface},
-        new Handler (lookups)
+        new ConfigurationHandler(fragmenter, lookups, converters, logger)
     );
     if (initialCheck) {verifyAccess (singletonInterface, singleton);}
     return singleton;
@@ -174,12 +175,18 @@ public class Orienteer {
     return buf.toString ();
   }
 
-  private class Handler implements InvocationHandler {
-    private Lookup[] lookups;
+  private static class ConfigurationHandler implements InvocationHandler {
+    private final Lookup[] lookups;
+    private final Converters converters;
+    private final Fragmenter fragmenter;
+    private final Logger logger;
 
-    Handler (Lookup[] lookups) {
+    ConfigurationHandler(Fragmenter fragmenter, Lookup[] lookups, Converters converters, Logger logger) {
+      this.fragmenter = fragmenter;
       this.lookups = new Lookup[lookups.length];
       for (int i = 0; i < lookups.length; i++) {this.lookups[i] = lookups[i];}
+      this.converters = converters;
+      this.logger = logger;
     }
 
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -206,65 +213,10 @@ public class Orienteer {
         Object result = converter.convert (value);
         logger.info (logPreamble + "found '" + result + "'");
         logger.info ("Configured: " + method.getDeclaringClass().getName () + "." + method.getName () +
-            "() -> " + result);
+            "() <- " + result);
         return result;
       }
     }
   }
 
-  static class Fragmenter {
-
-    List<String> fragment (String name) {
-      FragmentationState state = new FragmentationState();
-      for (int i = 0; i < name.length (); i++) {
-        state.acceptCharacter(name.charAt (i));
-      }
-      state.finish();
-      return state.getResult ();
-    }
-  }
-
-  static private class FragmentationState {
-    private int accumulatedUppers = 1;
-    private StringBuilder wordSoFar = new StringBuilder ();
-    private List<String> result = new ArrayList<String> ();
-
-    public void acceptCharacter(char c) {
-      if (Character.isUpperCase (c)) {
-        processUpperCaseCharacter(c);
-      }
-      else {
-        processLowerCaseCharacter(c);
-      }
-    }
-
-    public void finish() {
-      result.add (wordSoFar.toString ());
-    }
-
-    public List<String> getResult () {
-      return result;
-    }
-
-    private void processLowerCaseCharacter(char c) {
-      if (accumulatedUppers > 1) {
-        char firstOfThisWord = wordSoFar.charAt (wordSoFar.length () - 1);
-        wordSoFar.setLength (wordSoFar.length () - 1);
-        result.add (wordSoFar.toString ());
-        wordSoFar = new StringBuilder ();
-        wordSoFar.append (firstOfThisWord);
-      }
-      wordSoFar.append(c);
-      accumulatedUppers = 0;
-    }
-
-    private void processUpperCaseCharacter(char c) {
-      if (accumulatedUppers == 0) {
-        result.add (wordSoFar.toString ());
-        wordSoFar = new StringBuilder ();
-      }
-      wordSoFar.append (c);
-      accumulatedUppers++;
-    }
-  }
 }

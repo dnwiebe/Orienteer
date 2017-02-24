@@ -1,6 +1,7 @@
 package org.dnwiebe.orienteer;
 
 import org.dnwiebe.orienteer.converters.Converters;
+import org.dnwiebe.orienteer.helpers.Fragmenter;
 import org.dnwiebe.orienteer.lookups.FailingLookup;
 import org.dnwiebe.orienteer.lookups.Lookup;
 import org.junit.Test;
@@ -86,7 +87,7 @@ public class OrienteerTest {
   @Test
   public void worksWithTwoConvertersWhereTheFirstFindsTheValueAndTheSecondDoesnt () {
     Orienteer orienteer = new Orienteer ();
-    Orienteer.Fragmenter fragmenter = mock (Orienteer.Fragmenter.class);
+    Fragmenter fragmenter = mock (Fragmenter.class);
     List<String> fragmentedName = Arrays.asList ("fragmented", "name");
     when (fragmenter.fragment ("goodMethod")).thenReturn (fragmentedName);
     orienteer.fragmenter = fragmenter;
@@ -106,13 +107,13 @@ public class OrienteerTest {
     assertEquals("firstValue", singleton.goodMethod());
     verify (logger, atLeastOnce ()).info ("Seeking configuration value for 'goodMethod'");
     verify (logger, atLeastOnce ()).info ("  Consulting First Lookup for 'firstProperty': found 'firstValue'");
-    verify (logger, atLeastOnce ()).info ("Configured: " + GoodInterface.class.getName () + ".goodMethod() -> firstValue");
+    verify (logger, atLeastOnce ()).info ("Configured: " + GoodInterface.class.getName () + ".goodMethod() <- firstValue");
   }
 
   @Test
   public void worksWithTwoConvertersWhereTheFirstDoesntFindTheValueButTheSecondDoes () {
     Orienteer orienteer = new Orienteer ();
-    Orienteer.Fragmenter fragmenter = mock (Orienteer.Fragmenter.class);
+    Fragmenter fragmenter = mock (Fragmenter.class);
     List<String> fragmentedName = Arrays.asList ("fragmented", "name");
     when (fragmenter.fragment ("goodMethod")).thenReturn (fragmentedName);
     orienteer.fragmenter = fragmenter;
@@ -133,13 +134,13 @@ public class OrienteerTest {
     verify (logger, atLeastOnce ()).info ("Seeking configuration value for 'goodMethod'");
     verify (logger, atLeastOnce ()).info ("  Consulting First Lookup for 'firstProperty': not found");
     verify (logger, atLeastOnce ()).info ("  Consulting Second Lookup for 'secondProperty': found 'secondValue'");
-    verify (logger, atLeastOnce ()).info ("Configured: " + GoodInterface.class.getName () + ".goodMethod() -> secondValue");
+    verify (logger, atLeastOnce ()).info ("Configured: " + GoodInterface.class.getName () + ".goodMethod() <- secondValue");
   }
 
   @Test
   public void worksWithOneConverterWhereTheValueIsUnknown () {
     Orienteer orienteer = new Orienteer ();
-    Orienteer.Fragmenter fragmenter = mock (Orienteer.Fragmenter.class);
+    Fragmenter fragmenter = mock (Fragmenter.class);
     List<String> fragmentedName = Arrays.asList ("fragmented", "name");
     when (fragmenter.fragment ("goodMethod")).thenReturn (fragmentedName);
     orienteer.fragmenter = fragmenter;
@@ -161,7 +162,7 @@ public class OrienteerTest {
   @Test
   public void worksWithOneConverterEvenAfterConverterIsRemovedFromArray () {
     Orienteer orienteer = new Orienteer ();
-    Orienteer.Fragmenter fragmenter = mock (Orienteer.Fragmenter.class);
+    Fragmenter fragmenter = mock (Fragmenter.class);
     List<String> fragmentedName = Arrays.asList ("fragmented", "name");
     when (fragmenter.fragment ("goodMethod")).thenReturn (fragmentedName);
     orienteer.fragmenter = fragmenter;
@@ -194,7 +195,7 @@ public class OrienteerTest {
 
   @Test
   public void fragmenterCanHandleNoCaps () {
-    Orienteer.Fragmenter subject = new Orienteer.Fragmenter();
+    Fragmenter subject = new Fragmenter();
 
     List<String> result = subject.fragment ("stringwithnocapitals");
 
@@ -203,7 +204,7 @@ public class OrienteerTest {
 
   @Test
   public void fragmenterCanHandleAllCaps () {
-    Orienteer.Fragmenter subject = new Orienteer.Fragmenter();
+    Fragmenter subject = new Fragmenter();
 
     List<String> result = subject.fragment ("STRINGWITHALLCAPITALS");
 
@@ -212,7 +213,7 @@ public class OrienteerTest {
 
   @Test
   public void fragmenterBreaksOnLowerToUpperTransitions () {
-    Orienteer.Fragmenter subject = new Orienteer.Fragmenter();
+    Fragmenter subject = new Fragmenter();
 
     List<String> result = subject.fragment ("oneTwoTHREE");
 
@@ -221,7 +222,7 @@ public class OrienteerTest {
 
   @Test
   public void fragmenterHandlesAllCapsSubstrings () {
-    Orienteer.Fragmenter subject = new Orienteer.Fragmenter();
+    Fragmenter subject = new Fragmenter();
 
     List<String> result = subject.fragment ("oneTWOThree");
 
