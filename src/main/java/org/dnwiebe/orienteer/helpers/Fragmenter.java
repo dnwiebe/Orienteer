@@ -19,12 +19,15 @@ public class Fragmenter {
 
   static private class FragmentationState {
     private int accumulatedUppers = 1;
+    private int accumulatedDigits = 0;
     private StringBuilder wordSoFar = new StringBuilder();
     private List<String> result = new ArrayList<String>();
 
     public void acceptCharacter(char c) {
       if (Character.isUpperCase(c)) {
         processUpperCaseCharacter(c);
+      } else if (Character.isDigit(c)) {
+        processDigit(c);
       } else {
         processLowerCaseCharacter(c);
       }
@@ -38,25 +41,59 @@ public class Fragmenter {
       return result;
     }
 
-    private void processLowerCaseCharacter(char c) {
-      if (accumulatedUppers > 1) {
-        char firstOfThisWord = wordSoFar.charAt(wordSoFar.length() - 1);
-        wordSoFar.setLength(wordSoFar.length() - 1);
-        result.add(wordSoFar.toString());
-        wordSoFar = new StringBuilder();
-        wordSoFar.append(firstOfThisWord);
+    private void processDigit (char c) {
+      if ((accumulatedDigits == 0) && (wordSoFar.length() > 0)) {
+        finishWord();
       }
+      wordSoFar.append(c);
+      accumulatedDigits++;
+      accumulatedUppers = 0;
+    }
+
+    private void processLowerCaseCharacter(char c) {
+      finishUppercaseRegionIfNecessary();
+      finishDigitRegionIfNecessary();
       wordSoFar.append(c);
       accumulatedUppers = 0;
     }
 
     private void processUpperCaseCharacter(char c) {
-      if (accumulatedUppers == 0) {
-        result.add(wordSoFar.toString());
-        wordSoFar = new StringBuilder();
-      }
+      finishLowercaseRegionIfNecessary();
+      finishDigitRegionIfNecessary();
       wordSoFar.append(c);
       accumulatedUppers++;
+    }
+
+    private void finishWord () {
+      result.add(wordSoFar.toString());
+      wordSoFar = new StringBuilder();
+    }
+
+    private char reduceByOneChar(StringBuilder buf) {
+      char lastChar = buf.charAt(buf.length() - 1);
+      buf.setLength(buf.length() - 1);
+      return lastChar;
+    }
+
+    private void finishUppercaseRegionIfNecessary () {
+      if (accumulatedUppers > 1) {
+        char firstOfThisWord = reduceByOneChar(wordSoFar);
+        finishWord ();
+        wordSoFar.append(firstOfThisWord);
+      }
+    }
+
+    private void finishLowercaseRegionIfNecessary() {
+      if (accumulatedUppers == 0) {
+        finishWord ();
+      }
+    }
+
+    private void finishDigitRegionIfNecessary() {
+      if (accumulatedDigits > 0) {
+        finishWord ();
+        accumulatedDigits = 0;
+      }
     }
   }
 }

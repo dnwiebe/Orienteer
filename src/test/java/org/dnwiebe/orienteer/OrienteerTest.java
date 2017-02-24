@@ -192,40 +192,4 @@ public class OrienteerTest {
       assertEquals ("Couldn't retrieve configurations: goodMethod", e.getMessage ());
     }
   }
-
-  @Test
-  public void fragmenterCanHandleNoCaps () {
-    Fragmenter subject = new Fragmenter();
-
-    List<String> result = subject.fragment ("stringwithnocapitals");
-
-    assertEquals (Arrays.asList ("stringwithnocapitals"), result);
-  }
-
-  @Test
-  public void fragmenterCanHandleAllCaps () {
-    Fragmenter subject = new Fragmenter();
-
-    List<String> result = subject.fragment ("STRINGWITHALLCAPITALS");
-
-    assertEquals (Arrays.asList ("STRINGWITHALLCAPITALS"), result);
-  }
-
-  @Test
-  public void fragmenterBreaksOnLowerToUpperTransitions () {
-    Fragmenter subject = new Fragmenter();
-
-    List<String> result = subject.fragment ("oneTwoTHREE");
-
-    assertEquals (Arrays.asList ("one", "Two", "THREE"), result);
-  }
-
-  @Test
-  public void fragmenterHandlesAllCapsSubstrings () {
-    Fragmenter subject = new Fragmenter();
-
-    List<String> result = subject.fragment ("oneTWOThree");
-
-    assertEquals (Arrays.asList ("one", "TWO", "Three"), result);
-  }
 }
