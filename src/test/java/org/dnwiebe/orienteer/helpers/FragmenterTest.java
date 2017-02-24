@@ -55,16 +55,16 @@ public class FragmenterTest {
   @Test
   public void fragmenterSeparatesOutDigits () {
 
-    List<String> result = subject.fragment ("0one1two2three3");
+    List<String> result = subject.fragment ("one1two2three3");
 
-    assertEquals (Arrays.asList ("0", "one", "1", "two", "2", "three", "3"), result);
+    assertEquals (Arrays.asList ("one", "1", "two", "2", "three", "3"), result);
   }
 
   @Test
   public void fragmenterHandlesDigitsAndAllCaps () {
 
-    List<String> result = subject.fragment ("0ABCDoltXY123");
+    List<String> result = subject.fragment ("ABCDennisXY123");
 
-    assertEquals (Arrays.asList ("0", "ABC", "Dolt", "XY", "123"), result);
+    assertEquals (Arrays.asList ("ABC", "Dennis", "XY", "123"), result);
   }
 }
