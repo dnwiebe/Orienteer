@@ -3,6 +3,7 @@ package org.dnwiebe.orienteer.lookups;
 import com.fasterxml.jackson.jr.ob.JSON;
 
 import java.io.InputStream;
+import java.io.Reader;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -14,9 +15,29 @@ import java.util.regex.Pattern;
 public class JsonNestingLookup extends Lookup {
   Map<String, Object> tree;
 
+  public JsonNestingLookup (Reader rdr, String configRoot) {
+    try {
+      tree = JSON.std.mapFrom (rdr);
+      if (configRoot != null) {tree = (Map<String, Object>)valueFromName (new Pair ("." + configRoot), tree);}
+    }
+    catch (Exception e) {
+      throw new IllegalStateException (e);
+    }
+  }
+
   public JsonNestingLookup (InputStream istr, String configRoot) {
     try {
       tree = JSON.std.mapFrom (istr);
+      if (configRoot != null) {tree = (Map<String, Object>)valueFromName (new Pair ("." + configRoot), tree);}
+    }
+    catch (Exception e) {
+      throw new IllegalStateException (e);
+    }
+  }
+
+  public JsonNestingLookup (String json, String configRoot) {
+    try {
+      tree = JSON.std.mapFrom (json);
       if (configRoot != null) {tree = (Map<String, Object>)valueFromName (new Pair ("." + configRoot), tree);}
     }
     catch (Exception e) {

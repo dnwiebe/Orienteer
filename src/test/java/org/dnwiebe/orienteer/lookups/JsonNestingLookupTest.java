@@ -5,6 +5,8 @@ import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
@@ -72,9 +74,16 @@ public class JsonNestingLookupTest {
   }
 
   @Test
-  public void worksWithNullRoot () {
-    InputStream istr = new ByteArrayInputStream(json.getBytes ());
-    JsonNestingLookup subject = new JsonNestingLookup (istr, null);
+  public void worksWithReader () {
+    Reader rdr = new StringReader (json);
+    JsonNestingLookup subject = new JsonNestingLookup (rdr, null);
+
+    assertEquals ("first", subject.valueFromName("config.first.array[0]", JsonNestingLookupTest.class));
+  }
+
+  @Test
+  public void worksWithString () {
+    JsonNestingLookup subject = new JsonNestingLookup (json, null);
 
     assertEquals ("first", subject.valueFromName("config.first.array[0]", JsonNestingLookupTest.class));
   }
