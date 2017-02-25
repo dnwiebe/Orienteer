@@ -13,26 +13,24 @@ import java.util.regex.Pattern;
  * Created by dnwiebe on 2/17/17.
  */
 public class JsonNestingLookup extends Lookup {
-  Map<String, Object> tree;
+  private final Map<String, Object> tree;
 
-  public JsonNestingLookup (Reader rdr, String configRoot) {
-    try {
-      tree = JSON.std.mapFrom (rdr);
-      if (configRoot != null) {tree = (Map<String, Object>)valueFromName (new Pair ("." + configRoot), tree);}
-    }
-    catch (Exception e) {
-      throw new IllegalStateException (e);
-    }
+  public JsonNestingLookup (final Reader rdr, String configRoot) {
+    Supplier<Map<String, Object>> supplier = new Supplier<Map<String, Object>> () {
+      public Map<String, Object> supply () throws Exception {
+        return JSON.std.mapFrom (rdr);
+      }
+    };
+    tree = makeTree (supplier, configRoot);
   }
 
-  public JsonNestingLookup (InputStream istr, String configRoot) {
-    try {
-      tree = JSON.std.mapFrom (istr);
-      if (configRoot != null) {tree = (Map<String, Object>)valueFromName (new Pair ("." + configRoot), tree);}
-    }
-    catch (Exception e) {
-      throw new IllegalStateException (e);
-    }
+  public JsonNestingLookup (final InputStream istr, String configRoot) {
+    Supplier<Map<String, Object>> supplier = new Supplier<Map<String, Object>> () {
+      public Map<String, Object> supply () throws Exception {
+        return JSON.std.mapFrom (istr);
+      }
+    };
+    tree = makeTree (supplier, configRoot);
   }
 
   public JsonNestingLookup (String resourceName, String configRoot) {
@@ -51,6 +49,27 @@ public class JsonNestingLookup extends Lookup {
       }
     }
     return buf.toString ();
+  }
+
+  private interface Supplier<T> {
+    T supply () throws Exception;
+  }
+
+  private Map<String, Object> makeTree (Supplier<Map<String, Object>> supplier, String configRoot) {
+    Map<String, Object> result;
+    try {
+      result = supplier.supply ();
+    }
+    catch (Exception e) {
+      throw new IllegalStateException (e);
+    }
+    if (configRoot != null) {
+      result = (Map<String, Object>)valueFromName (new Pair ("." + configRoot), result);
+      if (result == null) {
+        throw new IllegalArgumentException ("Could not find config root '" + configRoot + "' in JSON structure");
+      }
+    }
+    return result;
   }
 
   public String valueFromName(String name, Class singletonType) {

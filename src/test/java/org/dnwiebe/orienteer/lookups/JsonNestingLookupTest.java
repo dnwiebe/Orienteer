@@ -3,45 +3,21 @@ package org.dnwiebe.orienteer.lookups;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.Reader;
-import java.io.StringReader;
+import java.io.*;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * Created by dnwiebe on 2/24/17.
  */
 public class JsonNestingLookupTest {
-  private String json;
   private JsonNestingLookup subject;
 
   @Before
   public void setup () {
-    json =
-        "{\n" +
-        " \"config\": {\n" +
-        "  	\"first\": {\n" +
-        "  		\"array\": [\n" +
-        "  			\"first\",\n" +
-        "  			{\n" +
-        "  				\"second\": \"secondValue\"\n" +
-        "  			},\n" +
-        "  			3\n" +
-        "  		],\n" +
-        "  		\"object\": {\n" +
-        "  			\"first\": 4.75\n" +
-        "  		}\n" +
-        "	  },\n" +
-        "	  \"second\": true\n" +
-        "  },\n" +
-        "  \"glorf\": \"goober\"\n" +
-        "}\n";
-
-
-    InputStream istr = new ByteArrayInputStream(json.getBytes ());
+    InputStream istr = getClass ().getClassLoader ().getResourceAsStream ("json/lookup.json");
     subject = new JsonNestingLookup (istr, "config");
   }
 
@@ -75,7 +51,8 @@ public class JsonNestingLookupTest {
 
   @Test
   public void worksWithReader () {
-    Reader rdr = new StringReader (json);
+    InputStream istr = getClass ().getClassLoader ().getResourceAsStream ("json/lookup.json");
+    Reader rdr = new InputStreamReader (istr);
     JsonNestingLookup subject = new JsonNestingLookup (rdr, null);
 
     assertEquals ("first", subject.valueFromName("config.first.array[0]", JsonNestingLookupTest.class));
@@ -86,5 +63,17 @@ public class JsonNestingLookupTest {
     JsonNestingLookup subject = new JsonNestingLookup ("json/lookup.json", null);
 
     assertEquals ("first", subject.valueFromName("config.first.array[0]", JsonNestingLookupTest.class));
+  }
+
+  @Test
+  public void throwsExceptionWhenConfigRootCantBeFound () {
+    InputStream istr = getClass ().getClassLoader ().getResourceAsStream ("json/lookup.json");
+    try {
+      new JsonNestingLookup (istr, "flintstone");
+      fail ();
+    }
+    catch (IllegalArgumentException e) {
+      assertEquals ("Could not find config root 'flintstone' in JSON structure", e.getMessage ());
+    }
   }
 }
