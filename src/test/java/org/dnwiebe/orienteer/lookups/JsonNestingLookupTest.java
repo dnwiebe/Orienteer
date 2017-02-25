@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
@@ -12,28 +13,34 @@ import static org.junit.Assert.assertEquals;
  * Created by dnwiebe on 2/24/17.
  */
 public class JsonNestingLookupTest {
+  private String json;
   private JsonNestingLookup subject;
 
   @Before
   public void setup () {
-    String json =
+    json =
         "{\n" +
-        "	\"first\": {\n" +
-        "		\"array\": [\n" +
-        "			\"first\",\n" +
-        "			{\n" +
-        "				\"second\": \"secondValue\"\n" +
-        "			},\n" +
-        "			3\n" +
-        "		],\n" +
-        "		\"object\": {\n" +
-        "			\"first\": 4.75\n" +
-        "		}\n" +
-        "	},\n" +
-        "	\"second\": true\n" +
+        " \"config\": {\n" +
+        "  	\"first\": {\n" +
+        "  		\"array\": [\n" +
+        "  			\"first\",\n" +
+        "  			{\n" +
+        "  				\"second\": \"secondValue\"\n" +
+        "  			},\n" +
+        "  			3\n" +
+        "  		],\n" +
+        "  		\"object\": {\n" +
+        "  			\"first\": 4.75\n" +
+        "  		}\n" +
+        "	  },\n" +
+        "	  \"second\": true\n" +
+        "  },\n" +
+        "  \"glorf\": \"goober\"\n" +
         "}\n";
 
-    subject = new JsonNestingLookup (new ByteArrayInputStream(json.getBytes ()));
+
+    InputStream istr = new ByteArrayInputStream(json.getBytes ());
+    subject = new JsonNestingLookup (istr, "config");
   }
 
   @Test
@@ -62,5 +69,13 @@ public class JsonNestingLookupTest {
     assertEquals (null, subject.valueFromName (".array[booga]", JsonNestingLookupTest.class));
     assertEquals (null, subject.valueFromName ("[4]", JsonNestingLookupTest.class));
     assertEquals (null, subject.valueFromName ("]}.gorb", JsonNestingLookupTest.class));
+  }
+
+  @Test
+  public void worksWithNullRoot () {
+    InputStream istr = new ByteArrayInputStream(json.getBytes ());
+    JsonNestingLookup subject = new JsonNestingLookup (istr, null);
+
+    assertEquals ("first", subject.valueFromName("config.first.array[0]", JsonNestingLookupTest.class));
   }
 }
