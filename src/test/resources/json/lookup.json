@@ -1,0 +1,18 @@
+{
+ "config": {
+  	"first": {
+  		"array": [
+  			"first",
+  			{
+  				"second": "secondValue"
+  			},
+  			3
+  		],
+  		"object": {
+  			"first": 4.75
+  		}
+	  },
+	  "second": true
+  },
+  "glorf": "goober"
+}

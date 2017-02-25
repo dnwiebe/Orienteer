@@ -35,14 +35,8 @@ public class JsonNestingLookup extends Lookup {
     }
   }
 
-  public JsonNestingLookup (String json, String configRoot) {
-    try {
-      tree = JSON.std.mapFrom (json);
-      if (configRoot != null) {tree = (Map<String, Object>)valueFromName (new Pair ("." + configRoot), tree);}
-    }
-    catch (Exception e) {
-      throw new IllegalStateException (e);
-    }
+  public JsonNestingLookup (String resourceName, String configRoot) {
+    this (JsonNestingLookup.class.getClassLoader ().getResourceAsStream (resourceName), configRoot);
   }
 
   public String nameFromFragments(List<String> fragments) {

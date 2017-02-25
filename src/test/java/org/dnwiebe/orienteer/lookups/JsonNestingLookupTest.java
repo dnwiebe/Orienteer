@@ -82,8 +82,8 @@ public class JsonNestingLookupTest {
   }
 
   @Test
-  public void worksWithString () {
-    JsonNestingLookup subject = new JsonNestingLookup (json, null);
+  public void worksWithResourceString () {
+    JsonNestingLookup subject = new JsonNestingLookup ("json/lookup.json", null);
 
     assertEquals ("first", subject.valueFromName("config.first.array[0]", JsonNestingLookupTest.class));
   }
