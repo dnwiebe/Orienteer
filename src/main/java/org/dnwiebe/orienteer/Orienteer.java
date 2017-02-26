@@ -3,6 +3,7 @@ package org.dnwiebe.orienteer;
 import org.dnwiebe.orienteer.converters.Converter;
 import org.dnwiebe.orienteer.converters.Converters;
 import org.dnwiebe.orienteer.helpers.Fragmenter;
+import org.dnwiebe.orienteer.helpers.Fragments;
 import org.dnwiebe.orienteer.lookups.Lookup;
 
 import java.io.PrintWriter;
@@ -55,11 +56,6 @@ public class Orienteer {
     catch (Exception e) {
       throw new IllegalStateException (e);
     }
-    return this;
-  }
-
-  public Orienteer addFragmenter (AuxiliaryFragmenter fragmenter) {
-    this.fragmenter.addAuxiliaryFragmenter (fragmenter);
     return this;
   }
 
@@ -196,7 +192,7 @@ public class Orienteer {
 
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
       logger.info ("Seeking configuration value for '" + method.getName () + "'");
-      List<String> fragments = fragmenter.fragment (method.getName ());
+      List<String> fragments = getFragments (method);
       for (Lookup lookup : lookups) {
         String name = lookup.nameFromFragments (fragments);
         String value = lookup.valueFromName (name, method.getDeclaringClass ());
@@ -205,6 +201,16 @@ public class Orienteer {
       }
       logger.warning ("NOT CONFIGURED: " + method.getDeclaringClass ().getName () + "." + method.getName () + "()");
       return null;
+    }
+
+    private List<String> getFragments (Method method) {
+      Fragments annotation = method.getAnnotation (Fragments.class);
+      if (annotation != null) {
+        return Arrays.asList (annotation.value ());
+      }
+      else {
+        return fragmenter.fragment (method.getName ());
+      }
     }
 
     private Object processValue (Method method, Lookup lookup, String name, String value) throws Exception {

@@ -137,8 +137,8 @@ second one would turn into ```forever[21].website```, which would be
 really annoying.
 
 However, it is quite simple to provide your own
-configuration types, your own Lookups, and your own auxiliary
-Fragmenters.  See the 
+configuration types, your own Lookups, and your own fragmentations.  
+See the 
 [```CustomDataTypeExample.java```](https://github.com/dnwiebe/Orienteer/blob/master/src/test/java/org/dnwiebe/orienteer/examples/CustomDataTypeExample.java "CustomDataTypeExample.java"),
 the 
 [```CustomLookupExample.java```](https://github.com/dnwiebe/Orienteer/blob/master/src/test/java/org/dnwiebe/orienteer/examples/CustomLookupExample.java "CustomLookupExample.java"),

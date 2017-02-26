@@ -2,6 +2,7 @@ package org.dnwiebe.orienteer;
 
 import org.dnwiebe.orienteer.converters.Converters;
 import org.dnwiebe.orienteer.helpers.Fragmenter;
+import org.dnwiebe.orienteer.helpers.Fragments;
 import org.dnwiebe.orienteer.helpers.MapFragmenter;
 import org.dnwiebe.orienteer.lookups.FailingLookup;
 import org.dnwiebe.orienteer.lookups.Lookup;
@@ -195,25 +196,19 @@ public class OrienteerTest {
     }
   }
 
-  @Test
-  public void usesAuxiliaryFragmenterIfItMatches () {
-    GoodInterface singleton = new Orienteer ()
-      .addFragmenter (new MapFragmenter ("goodMethod", Arrays.asList ("borfyWhop")))
-      .make (GoodInterface.class, new TestLookup ("goodMethod", "good", "borfyWhop", "borfy"));
-
-    String result = singleton.goodMethod ();
-
-    assertEquals ("borfy", result);
+  public interface AlternateFragmentation {
+    @Fragments ({"alter", "Nate", "Fragmen", "Tation"})
+    String methodName ();
   }
 
   @Test
-  public void skipsAuxiliaryFragmenterIfItDoesntMatch () {
-    GoodInterface singleton = new Orienteer ()
-      .addFragmenter (new MapFragmenter ("badMethod", Arrays.asList ("borfyWhop")))
-      .make (GoodInterface.class, new TestLookup ("goodMethod", "good", "borfyWhop", "borfy"));
+  public void usesAlternateFragmentationIfPresent () {
+    AlternateFragmentation singleton = new Orienteer ()
+      .make (AlternateFragmentation.class, new TestLookup ("methodName", "nope",
+        "alterNateFragmenTation", "yep"));
 
-    String result = singleton.goodMethod ();
+    String result = singleton.methodName ();
 
-    assertEquals ("good", result);
+    assertEquals ("yep", result);
   }
 }
