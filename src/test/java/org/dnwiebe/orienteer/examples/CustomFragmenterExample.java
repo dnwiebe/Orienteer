@@ -43,7 +43,7 @@ public class CustomFragmenterExample {
     String forever21 = singleton.forever21Website ();
 
     assertEquals ("https://www.kohls.com", kohls);
-    assertEquals (null, forever21); // TODO: The name for this one has extra empty brackets in it.
+    assertEquals (null, forever21);
   }
 
   @Test
