@@ -90,6 +90,11 @@ retrieve every field on it (unless you specifically inhibit
 this function); if one or more of them can't be found in any
 source, you'll get that exception immediately.
 
+For further information, see the code examples in
+[the examples directory](https://github.com/dnwiebe/Orienteer/blob/master/src/test/java/org/dnwiebe/orienteer/examples "the examples directory"),
+which are in the form of passing JUnit tests.
+
+
 ###Orienteer Is Opinionated
 Inconsistent naming is one of the bugaboos of configuration
 that both developers and operations personnel have had to
