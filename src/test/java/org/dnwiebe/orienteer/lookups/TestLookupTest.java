@@ -13,17 +13,6 @@ import static org.junit.Assert.fail;
 public class TestLookupTest {
 
   @Test
-  public void rejectsOddNumberOfConstructorParameters () {
-    try {
-      new TestLookup ("one parameter");
-      fail ();
-    }
-    catch (IllegalArgumentException e) {
-      assertEquals ("Name/value pairs require an even number of parameters, not 1", e.getMessage ());
-    }
-  }
-
-  @Test
   public void justPastesNameFragmentsBackTogether () {
     TestLookup subject = new TestLookup ();
 

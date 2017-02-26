@@ -12,9 +12,21 @@ import java.util.regex.Pattern;
 /**
  * Created by dnwiebe on 2/17/17.
  */
+
+/**
+ * Looks up configuration values in a JSON structure. Names are significantly mangled: subsection3ServiceURL becomes
+ * subsection[3].service.url .  This name will be interpreted in the JavaScript fashion to find the configuration value
+ * in the JSON.
+ */
 public class JsonNestingLookup extends Lookup {
   private final Map<String, Object> tree;
 
+  /**
+   * Create a JsonNestingLookup from a Reader containing JSON.
+   * @param rdr Reader containing a complete JSON structure with an unnamed JSON object at the top level.
+   * @param configRoot JavaScript notation for the location in the structure at which the configuration starts,
+   *                   or null if the configuration starts at the root of the structure.
+   */
   public JsonNestingLookup (final Reader rdr, String configRoot) {
     Supplier<Map<String, Object>> supplier = new Supplier<Map<String, Object>> () {
       public Map<String, Object> supply () throws Exception {
