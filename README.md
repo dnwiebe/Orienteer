@@ -143,6 +143,6 @@ Fragmenters.  See the
 the 
 [```CustomLookupExample.java```](https://github.com/dnwiebe/Orienteer/blob/master/src/test/java/org/dnwiebe/orienteer/examples/CustomLookupExample.java "CustomLookupExample.java"),
 and the
-[```CustomFragmenterExample.java```](https://github.com/dnwiebe/Orienteer/blob/master/src/test/java/org/dnwiebe/orienteer/example/CustomFragmenterExample.java "CustomFragmenterExample.java")
+[```CustomFragmenterExample.java```](https://github.com/dnwiebe/Orienteer/blob/master/src/test/java/org/dnwiebe/orienteer/examples/CustomFragmenterExample.java "CustomFragmenterExample.java")
 files in the ```org.dnwiebe.orienteer.examples``` package of 
 the ```test``` subtree for example code.
