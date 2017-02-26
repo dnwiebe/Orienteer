@@ -67,4 +67,12 @@ public class FragmenterTest {
 
     assertEquals (Arrays.asList ("ABC", "Dennis", "XY", "123"), result);
   }
+
+  @Test
+  public void forever21Website () {
+
+    List<String> result = subject.fragment ("forever21Website");
+
+    assertEquals (Arrays.asList ("forever", "21", "Website"), result);
+  }
 }

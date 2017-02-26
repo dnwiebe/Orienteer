@@ -1,5 +1,7 @@
 package org.dnwiebe.orienteer.helpers;
 
+import org.dnwiebe.orienteer.AuxiliaryFragmenter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,13 +10,23 @@ import java.util.List;
  */
 public class Fragmenter {
 
+  private List<AuxiliaryFragmenter> auxes = new ArrayList<AuxiliaryFragmenter> ();
+
   public List<String> fragment(String name) {
+    for (AuxiliaryFragmenter aux: auxes) {
+      List<String> result = aux.fragment (name);
+      if (result != null) {return result;}
+    }
     FragmentationState state = new FragmentationState();
     for (int i = 0; i < name.length(); i++) {
       state.acceptCharacter(name.charAt(i));
     }
     state.finish();
     return state.getResult();
+  }
+
+  public void addAuxiliaryFragmenter (AuxiliaryFragmenter aux) {
+    auxes.add (aux);
   }
 
   static private class FragmentationState {
@@ -84,7 +96,7 @@ public class Fragmenter {
     }
 
     private void finishLowercaseRegionIfNecessary() {
-      if (accumulatedUppers == 0) {
+      if ((accumulatedUppers == 0) && (accumulatedDigits == 0)) {
         finishWord ();
       }
     }

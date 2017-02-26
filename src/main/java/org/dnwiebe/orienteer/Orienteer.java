@@ -58,6 +58,11 @@ public class Orienteer {
     return this;
   }
 
+  public Orienteer addFragmenter (AuxiliaryFragmenter fragmenter) {
+    this.fragmenter.addAuxiliaryFragmenter (fragmenter);
+    return this;
+  }
+
   /**
    * Call this if for some reason you don't want make() to run its standard initial check to make sure all the
    * configuration values are readable.

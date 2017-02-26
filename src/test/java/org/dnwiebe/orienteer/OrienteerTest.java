@@ -2,8 +2,10 @@ package org.dnwiebe.orienteer;
 
 import org.dnwiebe.orienteer.converters.Converters;
 import org.dnwiebe.orienteer.helpers.Fragmenter;
+import org.dnwiebe.orienteer.helpers.MapFragmenter;
 import org.dnwiebe.orienteer.lookups.FailingLookup;
 import org.dnwiebe.orienteer.lookups.Lookup;
+import org.dnwiebe.orienteer.lookups.TestLookup;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -191,5 +193,27 @@ public class OrienteerTest {
     catch (IllegalStateException e) {
       assertEquals ("Couldn't retrieve configurations: goodMethod", e.getMessage ());
     }
+  }
+
+  @Test
+  public void usesAuxiliaryFragmenterIfItMatches () {
+    GoodInterface singleton = new Orienteer ()
+      .addFragmenter (new MapFragmenter ("goodMethod", Arrays.asList ("borfyWhop")))
+      .make (GoodInterface.class, new TestLookup ("goodMethod", "good", "borfyWhop", "borfy"));
+
+    String result = singleton.goodMethod ();
+
+    assertEquals ("borfy", result);
+  }
+
+  @Test
+  public void skipsAuxiliaryFragmenterIfItDoesntMatch () {
+    GoodInterface singleton = new Orienteer ()
+      .addFragmenter (new MapFragmenter ("badMethod", Arrays.asList ("borfyWhop")))
+      .make (GoodInterface.class, new TestLookup ("goodMethod", "good", "borfyWhop", "borfy"));
+
+    String result = singleton.goodMethod ();
+
+    assertEquals ("good", result);
   }
 }

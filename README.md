@@ -114,7 +114,7 @@ values won't be used.  (In case you're curious, in the map
 of defaults, the key would have to be ```WeatherServiceBaseUrl```.)
 
 ###Orienteer Is Extensible
-Orienteer has two major limitations.
+Orienteer has three major limitations.
 
 First, it can only
 provide configuration values in a certain small number of
@@ -127,10 +127,22 @@ Second, it can only retrieve configuration values from a
 certain small number of sources (default maps, environment
 variables, property files, and so on).
 
-However, it is quite simple to provide both your own
-configuration types and your own Lookups.  See the 
-[```CustomDataTypeExample.java```](https://github.com/dnwiebe/Orienteer/blob/master/src/test/java/org/dnwiebe/orienteer/examples/CustomDataTypeExample.java "CustomDataTypeExample.java")
-and the 
-[```CustomLookupExample.java```](https://github.com/dnwiebe/Orienteer/blob/master/src/test/java/org/dnwiebe/orienteer/examples/CustomLookupExample.java "CustomLookupExample.java")
+Third, it fragments the method names of your configuration interface
+in a certain rigidly-specified way: for example, if you had methods
+named ```kohlsWebsite``` and ```forever21Website```, those would be
+fragmented into ```{"kohls", "Website"}```, which is probably what
+you want, and ```{"forever", "21", "Website}```, which is probably not.
+As a matter of fact, if you were using the JsonNestingLookup, that
+second one would turn into ```forever[21].website```, which would be
+really annoying.
+
+However, it is quite simple to provide your own
+configuration types, your own Lookups, and your own auxiliary
+Fragmenters.  See the 
+[```CustomDataTypeExample.java```](https://github.com/dnwiebe/Orienteer/blob/master/src/test/java/org/dnwiebe/orienteer/examples/CustomDataTypeExample.java "CustomDataTypeExample.java"),
+the 
+[```CustomLookupExample.java```](https://github.com/dnwiebe/Orienteer/blob/master/src/test/java/org/dnwiebe/orienteer/examples/CustomLookupExample.java "CustomLookupExample.java"),
+and the
+[```CustomFragmenterExample.java```](https://github.com/dnwiebe/Orienteer/blob/master/src/test/java/org/dnwiebe/orienteer/example/CustomFragmenterExample.java "CustomFragmenterExample.java")
 files in the ```org.dnwiebe.orienteer.examples``` package of 
 the ```test``` subtree for example code.
