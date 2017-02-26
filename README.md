@@ -2,7 +2,7 @@
 _An Opinionated, Consistent Multilayer Configuration Library_
 _For JVM Languages_
 
-Current version: 0.3
+Current version: 0.4
 
 ###The Need for Configuration
 Any application of significant size needs to be configured,
