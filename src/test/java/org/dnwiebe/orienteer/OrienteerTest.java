@@ -3,7 +3,6 @@ package org.dnwiebe.orienteer;
 import org.dnwiebe.orienteer.converters.Converters;
 import org.dnwiebe.orienteer.helpers.Fragmenter;
 import org.dnwiebe.orienteer.helpers.Fragments;
-import org.dnwiebe.orienteer.helpers.MapFragmenter;
 import org.dnwiebe.orienteer.lookups.FailingLookup;
 import org.dnwiebe.orienteer.lookups.Lookup;
 import org.dnwiebe.orienteer.lookups.TestLookup;
