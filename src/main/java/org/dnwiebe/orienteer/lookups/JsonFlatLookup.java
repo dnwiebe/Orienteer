@@ -10,15 +10,15 @@ import java.util.Map;
  */
 
 /**
- * Looks up configuration values in a JSON structure. Method name abcDEFGhi becomes abc.def.ghi.
+ * Looks up configuration values in a JSON object. Method name abcDEFGhi becomes abc.def.ghi.
  */
 public class JsonFlatLookup extends JsonLookup {
 
   /**
    * Create a JsonNestingLookup from a Reader containing JSON.
    * @param rdr Reader containing a complete JSON structure with an unnamed JSON object at the top level.
-   * @param configRoot JavaScript notation for the location in the structure at which the configuration starts,
-   *                   or null if the configuration starts at the root of the structure.
+   * @param configRoot JavaScript notation for the location in the JSON structure of the object containing the
+   *                   configuration.
    */
   public JsonFlatLookup (Reader rdr, String configRoot) {
     super (rdr, configRoot);
@@ -27,8 +27,8 @@ public class JsonFlatLookup extends JsonLookup {
   /**
    * Create a JsonNestingLookup from an InputStream containing JSON.
    * @param istr InputStream containing a complete JSON structure with an unnamed JSON object at the top level.
-   * @param configRoot JavaScript notation for the location in the structure at which the configuration starts,
-   *                   or null if the configuration starts at the root of the structure.
+   * @param configRoot JavaScript notation for the location in the JSON structure of the object containing the
+   *                   configuration.
    */
   public JsonFlatLookup (InputStream istr, String configRoot) {
     super (istr, configRoot);
@@ -37,8 +37,8 @@ public class JsonFlatLookup extends JsonLookup {
   /**
    * Create a JsonNestingLookup from JSON in a resource file.
    * @param resourceName Name of a resource file containing a JSON structure with an unnamed JSON object at the top level.
-   * @param configRoot JavaScript notation for the location in the structure at which the configuration starts,
-   *                   or null if the configuration starts at the root of the structure.
+   * @param configRoot JavaScript notation for the location in the JSON structure of the object containing the
+   *                   configuration.
    */
   public JsonFlatLookup (String resourceName, String configRoot) {
     super (resourceName, configRoot);
