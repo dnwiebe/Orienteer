@@ -18,7 +18,7 @@ public class JsonNestingLookupTest {
   @Before
   public void setup () {
     InputStream istr = getClass ().getClassLoader ().getResourceAsStream ("json/lookup.json");
-    subject = new JsonNestingLookup (istr, "config");
+    subject = new JsonNestingLookup (istr, "configNesting");
   }
 
   @Test
@@ -55,14 +55,16 @@ public class JsonNestingLookupTest {
     Reader rdr = new InputStreamReader (istr);
     JsonNestingLookup subject = new JsonNestingLookup (rdr, null);
 
-    assertEquals ("first", subject.valueFromName("config.first.array[0]", JsonNestingLookupTest.class));
+    assertEquals ("first", subject.valueFromName("configNesting.first.array[0]",
+      JsonNestingLookupTest.class));
   }
 
   @Test
   public void worksWithResourceString () {
     JsonNestingLookup subject = new JsonNestingLookup ("json/lookup.json", null);
 
-    assertEquals ("first", subject.valueFromName("config.first.array[0]", JsonNestingLookupTest.class));
+    assertEquals ("first", subject.valueFromName("configNesting.first.array[0]",
+      JsonNestingLookupTest.class));
   }
 
   @Test

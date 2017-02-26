@@ -3,17 +3,16 @@ package org.dnwiebe.orienteer.lookups;
 import java.io.InputStream;
 import java.io.Reader;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Created by dnwiebe on 2/17/17.
+ * Created by dnwiebe on 2/26/17.
  */
 
 /**
- * Looks up configuration values in a JSON structure. Names are significantly mangled: subsection3ServiceURL becomes
- * subsection[3].service.url .  This name will be interpreted in the JavaScript fashion to find the configuration value
- * in the JSON.
+ * Looks up configuration values in a JSON structure. Method name abcDEFGhi becomes abc.def.ghi.
  */
-public class JsonNestingLookup extends JsonLookup {
+public class JsonFlatLookup extends JsonLookup {
 
   /**
    * Create a JsonNestingLookup from a Reader containing JSON.
@@ -21,7 +20,7 @@ public class JsonNestingLookup extends JsonLookup {
    * @param configRoot JavaScript notation for the location in the structure at which the configuration starts,
    *                   or null if the configuration starts at the root of the structure.
    */
-  public JsonNestingLookup (final Reader rdr, String configRoot) {
+  public JsonFlatLookup (Reader rdr, String configRoot) {
     super (rdr, configRoot);
   }
 
@@ -31,7 +30,7 @@ public class JsonNestingLookup extends JsonLookup {
    * @param configRoot JavaScript notation for the location in the structure at which the configuration starts,
    *                   or null if the configuration starts at the root of the structure.
    */
-  public JsonNestingLookup (final InputStream istr, String configRoot) {
+  public JsonFlatLookup (InputStream istr, String configRoot) {
     super (istr, configRoot);
   }
 
@@ -41,33 +40,29 @@ public class JsonNestingLookup extends JsonLookup {
    * @param configRoot JavaScript notation for the location in the structure at which the configuration starts,
    *                   or null if the configuration starts at the root of the structure.
    */
-  public JsonNestingLookup (String resourceName, String configRoot) {
+  public JsonFlatLookup (String resourceName, String configRoot) {
     super (resourceName, configRoot);
   }
 
-  public String nameFromFragments(List<String> fragments) {
+  public String nameFromFragments (List<String> fragments) {
     StringBuilder buf = new StringBuilder ();
-    for (String fragment : fragments) {
-      if (isNumber (fragment)) {
-        buf.append ("[").append (fragment).append ("]");
-      }
-      else {
-        if (buf.length () > 0) {buf.append (".");}
-        buf.append (fragment.toLowerCase ());
-      }
+    for (String fragment: fragments) {
+      if (buf.length () > 0) {buf.append (".");}
+      buf.append (fragment.toLowerCase ());
     }
     return buf.toString ();
   }
 
-  public String valueFromName(String name, Class singletonType) {
-    Object value = valueFromName (new Pair ("." + name), tree);
-    return (value == null) ? null : value.toString ();
-  }
-
-  private boolean isNumber (String s) {
-    for (int i = 0; i < s.length (); i++) {
-      if (!Character.isDigit (s.charAt (i))) {return false;}
+  public String valueFromName (String name, Class singletonType) {
+    Object obj = tree.get (name);
+    if (obj == null) {
+      return null;
     }
-    return true;
+    else if (obj instanceof Map || obj instanceof List) {
+      return null;
+    }
+    else {
+      return obj.toString ();
+    }
   }
 }

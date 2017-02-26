@@ -1,18 +1,25 @@
 {
- "config": {
-  	"first": {
-  		"array": [
-  			"first",
-  			{
-  				"second": "secondValue"
-  			},
-  			3
-  		],
-  		"object": {
-  			"first": 4.75
-  		}
-	  },
-	  "second": true
+  "configNesting": {
+    "first": {
+      "array": [
+        "first",
+        {
+          "second": "secondValue"
+        },
+        3
+      ],
+      "object": {
+        "first": 4.75
+      }
+    },
+    "second": true
+  },
+  "configFlat": {
+    "first.array.0": "first",
+    "first.array.1.second": "secondValue",
+    "first.array.2": 3,
+    "first.object.first": 4.75,
+    "second": true
   },
   "glorf": "goober"
 }
