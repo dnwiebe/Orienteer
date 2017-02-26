@@ -19,6 +19,7 @@ public class SimpleExample {
     Integer someInt ();
     Long someLong ();
     Boolean someBoolean ();
+    Double missingDouble ();
   }
 
   @Test
@@ -28,6 +29,7 @@ public class SimpleExample {
     map.put ("SomeInt", "42");
     map.put ("SomeLong", "9080706050403020100");
     map.put ("SomeBoolean", "true");
+    // no value for MissingDouble
 
     SimpleExampleConfiguration configurationSingleton = new Orienteer().make (SimpleExampleConfiguration.class,
         new MapLookup(map)
@@ -37,5 +39,6 @@ public class SimpleExample {
     assertEquals (Integer.valueOf (42), configurationSingleton.someInt ());
     assertEquals (Long.valueOf (9080706050403020100L), configurationSingleton.someLong ());
     assertEquals (Boolean.TRUE, configurationSingleton.someBoolean ());
+    assertEquals (null, configurationSingleton.missingDouble ());
   }
 }
