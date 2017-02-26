@@ -20,6 +20,7 @@ public class PropertiesLookup extends Lookup {
   }
 
   public PropertiesLookup (InputStream istr) {
+    super ();
     properties = new Properties ();
     try {
       properties.load (istr);
@@ -30,6 +31,27 @@ public class PropertiesLookup extends Lookup {
   }
 
   public PropertiesLookup (Properties properties) {
+    super ();
+    this.properties = properties;
+  }
+
+  public PropertiesLookup (String name, String resourceName) {
+    this (name, PropertiesLookup.class.getClassLoader ().getResourceAsStream (resourceName));
+  }
+
+  public PropertiesLookup (String name, InputStream istr) {
+    super (name);
+    properties = new Properties ();
+    try {
+      properties.load (istr);
+    }
+    catch (Exception e) {
+      throw new IllegalStateException (e);
+    }
+  }
+
+  public PropertiesLookup (String name, Properties properties) {
+    super (name);
     this.properties = properties;
   }
 

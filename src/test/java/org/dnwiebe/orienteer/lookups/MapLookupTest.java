@@ -14,11 +14,12 @@ import static org.junit.Assert.assertEquals;
  */
 public class MapLookupTest {
 
+  private Map<String, String> map;
   private MapLookup subject;
 
   @Before
   public void setup () {
-    Map<String, String> map = new HashMap<String, String>();
+    map = new HashMap<String, String>();
     map.put ("Single", "single value");
     map.put ("OneTwoThreeFour", "multi-fragment value");
     subject = new MapLookup (map);
@@ -37,5 +38,11 @@ public class MapLookupTest {
     String result = subject.valueFromName ("OneTwoThreeFour", null);
 
     assertEquals ("multi-fragment value", result);
+  }
+
+  @Test
+  public void nameViaConstructors () {
+    assertEquals (MapLookup.class.getName (), new MapLookup (map).getName ());
+    assertEquals ("booga", new MapLookup ("booga", map).getName ());
   }
 }

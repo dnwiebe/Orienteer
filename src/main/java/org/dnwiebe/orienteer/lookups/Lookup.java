@@ -11,12 +11,22 @@ import java.util.List;
  */
 public abstract class Lookup {
 
+  private String name;
+
+  protected Lookup () {
+    this.name = getClass ().getName ();
+  }
+
+  protected Lookup (String name) {
+    this.name = name;
+  }
+
   /**
    * Provides a name for this Lookup, mostly for use in system logs. Defaults to the fully-qualified name of the class.
    * @return Name for Lookup.
    */
   public String getName () {
-    return getClass ().getName ();
+    return name;
   }
 
   /**

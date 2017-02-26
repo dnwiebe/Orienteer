@@ -24,6 +24,7 @@ public class TestLookup extends Lookup {
    *                       "http://92.134.10.47/weather/v3"
    */
   public TestLookup (String... nameValuePairs) {
+    super ();
     map = MapLiteral.convert (String.class, String.class, nameValuePairs);
   }
 

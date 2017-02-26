@@ -12,4 +12,8 @@ public class SystemPropsLookup extends PropertiesLookup {
   public SystemPropsLookup () {
     super (System.getProperties ());
   }
+
+  public SystemPropsLookup (String name) {
+    super (name, System.getProperties ());
+  }
 }

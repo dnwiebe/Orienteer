@@ -19,8 +19,7 @@ public class JsonFlatLookupTest {
 
   @Before
   public void setup () {
-    InputStream istr = getClass ().getClassLoader ().getResourceAsStream ("json/lookup.json");
-    subject = new JsonFlatLookup (istr, "configFlat");
+    subject = new JsonFlatLookup (istr (), "configFlat");
   }
 
   @Test
@@ -49,8 +48,7 @@ public class JsonFlatLookupTest {
 
   @Test
   public void worksWithReader () {
-    InputStream istr = getClass ().getClassLoader ().getResourceAsStream ("json/lookup.json");
-    Reader rdr = new InputStreamReader (istr);
+    Reader rdr = new InputStreamReader (istr ());
     JsonFlatLookup subject = new JsonFlatLookup (rdr, "configFlat");
 
     assertEquals ("first", subject.valueFromName("first.array.0",
@@ -75,13 +73,30 @@ public class JsonFlatLookupTest {
 
   @Test
   public void throwsExceptionWhenConfigRootCantBeFound () {
-    InputStream istr = getClass ().getClassLoader ().getResourceAsStream ("json/lookup.json");
     try {
-      new JsonFlatLookup (istr, "flintstone");
+      new JsonFlatLookup (istr (), "flintstone");
       fail ();
     }
     catch (IllegalArgumentException e) {
       assertEquals ("Could not find config root 'flintstone' in JSON structure", e.getMessage ());
     }
+  }
+
+  @Test
+  public void nameViaConstructors () {
+    assertEquals (JsonFlatLookup.class.getName (), new JsonFlatLookup (rdr (), null).getName ());
+    assertEquals (JsonFlatLookup.class.getName (), new JsonFlatLookup (istr (), null).getName ());
+    assertEquals (JsonFlatLookup.class.getName (), new JsonFlatLookup ("json/lookup.json", null).getName ());
+    assertEquals ("booga", new JsonFlatLookup ("booga", rdr (), null).getName ());
+    assertEquals ("booga", new JsonFlatLookup ("booga", istr (), null).getName ());
+    assertEquals ("booga", new JsonFlatLookup ("booga", "json/lookup.json", null).getName ());
+  }
+
+  private InputStream istr () {
+    return getClass ().getClassLoader ().getResourceAsStream ("json/lookup.json");
+  }
+
+  private Reader rdr () {
+    return new InputStreamReader (istr ());
   }
 }

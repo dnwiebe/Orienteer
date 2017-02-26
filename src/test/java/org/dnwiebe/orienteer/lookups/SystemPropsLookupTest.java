@@ -34,4 +34,10 @@ public class SystemPropsLookupTest {
 
     assertEquals (expectedResult, result);
   }
+
+  @Test
+  public void nameViaConstructors () {
+    assertEquals (SystemPropsLookup.class.getName (), new SystemPropsLookup ().getName ());
+    assertEquals ("booga", new SystemPropsLookup ("booga").getName ());
+  }
 }

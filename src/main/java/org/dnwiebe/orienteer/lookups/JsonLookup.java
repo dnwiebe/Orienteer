@@ -16,6 +16,7 @@ public abstract class JsonLookup extends Lookup {
   protected final Map<String, Object> tree;
 
   protected JsonLookup (final Reader rdr, String configRoot) {
+    super ();
     Supplier<Map<String, Object>> supplier = new Supplier<Map<String, Object>> () {
       public Map<String, Object> supply () throws Exception {
         return JSON.std.mapFrom (rdr);
@@ -25,6 +26,7 @@ public abstract class JsonLookup extends Lookup {
   }
 
   protected JsonLookup (final InputStream istr, String configRoot) {
+    super ();
     Supplier<Map<String, Object>> supplier = new Supplier<Map<String, Object>> () {
       public Map<String, Object> supply () throws Exception {
         return JSON.std.mapFrom (istr);
@@ -35,6 +37,30 @@ public abstract class JsonLookup extends Lookup {
 
   protected JsonLookup (String resourceName, String configRoot) {
     this (JsonNestingLookup.class.getClassLoader ().getResourceAsStream (resourceName), configRoot);
+  }
+
+  protected JsonLookup (String name, final Reader rdr, String configRoot) {
+    super (name);
+    Supplier<Map<String, Object>> supplier = new Supplier<Map<String, Object>> () {
+      public Map<String, Object> supply () throws Exception {
+        return JSON.std.mapFrom (rdr);
+      }
+    };
+    tree = makeTree (supplier, configRoot);
+  }
+
+  protected JsonLookup (String name, final InputStream istr, String configRoot) {
+    super (name);
+    Supplier<Map<String, Object>> supplier = new Supplier<Map<String, Object>> () {
+      public Map<String, Object> supply () throws Exception {
+        return JSON.std.mapFrom (istr);
+      }
+    };
+    tree = makeTree (supplier, configRoot);
+  }
+
+  protected JsonLookup (String name, String resourceName, String configRoot) {
+    this (name, JsonNestingLookup.class.getClassLoader ().getResourceAsStream (resourceName), configRoot);
   }
 
   private interface Supplier<T> {

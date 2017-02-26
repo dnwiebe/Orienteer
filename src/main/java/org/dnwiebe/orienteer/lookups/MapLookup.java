@@ -15,6 +15,12 @@ public class MapLookup extends Lookup {
   private Map<String, String> map;
 
   public MapLookup(Map<String, String> map) {
+    super ();
+    this.map = map;
+  }
+
+  public MapLookup(String name, Map<String, String> map) {
+    super (name);
     this.map = map;
   }
 

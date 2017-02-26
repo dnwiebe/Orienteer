@@ -44,4 +44,10 @@ public class EnvironmentLookupTest {
 
     assertEquals (expectedResult, result);
   }
+
+  @Test
+  public void nameViaConstructors () {
+    assertEquals (EnvironmentLookup.class.getName (), new EnvironmentLookup ().getName ());
+    assertEquals ("booga", new EnvironmentLookup ("booga").getName ());
+  }
 }

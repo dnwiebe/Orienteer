@@ -38,4 +38,10 @@ public class FailingLookupTest {
           e.getMessage ());
     }
   }
+
+  @Test
+  public void nameViaConstructors () {
+    assertEquals (FailingLookup.class.getName (), new FailingLookup ().getName ());
+    assertEquals ("booga", new FailingLookup ("booga").getName ());
+  }
 }

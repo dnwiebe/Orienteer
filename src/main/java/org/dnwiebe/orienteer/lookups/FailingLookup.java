@@ -11,6 +11,17 @@ import java.util.List;
  * want it to be an error for configuration values to be missing.
  */
 public class FailingLookup extends Lookup {
+
+  public FailingLookup () {
+    super ();
+  }
+
+  public FailingLookup (String name) {
+    super (name);
+  }
+
+
+
   public String nameFromFragments(List<String> fragments) {
     StringBuilder buf = new StringBuilder ();
     for (String fragment : fragments) {

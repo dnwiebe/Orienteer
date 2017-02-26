@@ -4,6 +4,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.Arrays;
 import java.util.Properties;
 
@@ -55,11 +58,24 @@ public class PropertiesLookupTest {
 
   @Test
   public void inputStreamConstructor () {
-    ByteArrayInputStream istr = new ByteArrayInputStream ("brand = Respironics\n".getBytes());
-    PropertiesLookup subject = new PropertiesLookup (istr);
+    PropertiesLookup subject = new PropertiesLookup (istr ());
 
-    String result = subject.valueFromName ("brand", PropertiesLookupTest.class);
+    String result = subject.valueFromName ("first.array.1.second", PropertiesLookupTest.class);
 
-    assertEquals ("Respironics", result);
+    assertEquals ("secondValue", result);
+  }
+
+  @Test
+  public void nameViaConstructors () {
+    assertEquals (PropertiesLookup.class.getName (), new PropertiesLookup (istr ()).getName ());
+    assertEquals (PropertiesLookup.class.getName (), new PropertiesLookup ("json/lookup.json").getName ());
+    assertEquals (PropertiesLookup.class.getName (), new PropertiesLookup (new Properties ()).getName ());
+    assertEquals ("booga", new PropertiesLookup ("booga", istr ()).getName ());
+    assertEquals ("booga", new PropertiesLookup ("booga", "json/lookup.json").getName ());
+    assertEquals ("booga", new PropertiesLookup ("booga", new Properties ()).getName ());
+  }
+
+  private InputStream istr () {
+    return getClass ().getClassLoader ().getResourceAsStream ("properties/lookup.properties");
   }
 }

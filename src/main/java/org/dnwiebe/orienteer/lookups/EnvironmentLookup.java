@@ -15,6 +15,10 @@ public class EnvironmentLookup extends MapLookup {
     super (System.getenv ());
   }
 
+  public EnvironmentLookup (String name) {
+    super (name, System.getenv ());
+  }
+
   @Override
   public String nameFromFragments(List<String> fragments) {
     StringBuilder buf = new StringBuilder ();

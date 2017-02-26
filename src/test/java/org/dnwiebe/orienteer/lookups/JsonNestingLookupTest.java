@@ -17,8 +17,7 @@ public class JsonNestingLookupTest {
 
   @Before
   public void setup () {
-    InputStream istr = getClass ().getClassLoader ().getResourceAsStream ("json/lookup.json");
-    subject = new JsonNestingLookup (istr, "configNesting");
+    subject = new JsonNestingLookup (istr (), "configNesting");
   }
 
   @Test
@@ -51,8 +50,7 @@ public class JsonNestingLookupTest {
 
   @Test
   public void worksWithReader () {
-    InputStream istr = getClass ().getClassLoader ().getResourceAsStream ("json/lookup.json");
-    Reader rdr = new InputStreamReader (istr);
+    Reader rdr = new InputStreamReader (istr ());
     JsonNestingLookup subject = new JsonNestingLookup (rdr, null);
 
     assertEquals ("first", subject.valueFromName("configNesting.first.array[0]",
@@ -69,13 +67,30 @@ public class JsonNestingLookupTest {
 
   @Test
   public void throwsExceptionWhenConfigRootCantBeFound () {
-    InputStream istr = getClass ().getClassLoader ().getResourceAsStream ("json/lookup.json");
     try {
-      new JsonNestingLookup (istr, "flintstone");
+      new JsonNestingLookup (istr (), "flintstone");
       fail ();
     }
     catch (IllegalArgumentException e) {
       assertEquals ("Could not find config root 'flintstone' in JSON structure", e.getMessage ());
     }
+  }
+
+  @Test
+  public void nameViaConstructors () {
+    assertEquals (JsonNestingLookup.class.getName (), new JsonNestingLookup (rdr (), null).getName ());
+    assertEquals (JsonNestingLookup.class.getName (), new JsonNestingLookup (istr (), null).getName ());
+    assertEquals (JsonNestingLookup.class.getName (), new JsonNestingLookup ("json/lookup.json", null).getName ());
+    assertEquals ("booga", new JsonNestingLookup ("booga", rdr (), null).getName ());
+    assertEquals ("booga", new JsonNestingLookup ("booga", istr (), null).getName ());
+    assertEquals ("booga", new JsonNestingLookup ("booga", "json/lookup.json", null).getName ());
+  }
+
+  private InputStream istr () {
+    return getClass ().getClassLoader ().getResourceAsStream ("json/lookup.json");
+  }
+
+  private Reader rdr () {
+    return new InputStreamReader (istr ());
   }
 }

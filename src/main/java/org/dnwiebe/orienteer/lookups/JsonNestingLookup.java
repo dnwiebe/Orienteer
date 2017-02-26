@@ -45,6 +45,39 @@ public class JsonNestingLookup extends JsonLookup {
     super (resourceName, configRoot);
   }
 
+  /**
+   * Create a JsonNestingLookup from a Reader containing JSON.
+   * @param name Name to be used in forensics for this Lookup
+   * @param rdr Reader containing a complete JSON structure with an unnamed JSON object at the top level.
+   * @param configRoot JavaScript notation for the location in the structure at which the configuration starts,
+   *                   or null if the configuration starts at the root of the structure.
+   */
+  public JsonNestingLookup (String name, final Reader rdr, String configRoot) {
+    super (name, rdr, configRoot);
+  }
+
+  /**
+   * Create a JsonNestingLookup from an InputStream containing JSON.
+   * @param name Name to be used in forensics for this Lookup
+   * @param istr InputStream containing a complete JSON structure with an unnamed JSON object at the top level.
+   * @param configRoot JavaScript notation for the location in the structure at which the configuration starts,
+   *                   or null if the configuration starts at the root of the structure.
+   */
+  public JsonNestingLookup (String name, final InputStream istr, String configRoot) {
+    super (name, istr, configRoot);
+  }
+
+  /**
+   * Create a JsonNestingLookup from JSON in a resource file.
+   * @param name Name to be used in forensics for this Lookup
+   * @param resourceName Name of a resource file containing a JSON structure with an unnamed JSON object at the top level.
+   * @param configRoot JavaScript notation for the location in the structure at which the configuration starts,
+   *                   or null if the configuration starts at the root of the structure.
+   */
+  public JsonNestingLookup (String name, String resourceName, String configRoot) {
+    super (name, resourceName, configRoot);
+  }
+
   public String nameFromFragments(List<String> fragments) {
     StringBuilder buf = new StringBuilder ();
     for (String fragment : fragments) {
