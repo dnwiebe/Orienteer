@@ -48,14 +48,14 @@ public class PropertiesLookupTest {
   public void resourcePropertiesFileConstructor () {
     PropertiesLookup subject = new PropertiesLookup ("properties/lookup.properties");
 
-    String result = subject.valueFromName ("brand", PropertiesLookupTest.class);
+    String result = subject.valueFromName ("first.array.1.second", PropertiesLookupTest.class);
 
-    assertEquals ("Respironics", result);
+    assertEquals ("secondValue", result);
   }
 
   @Test
   public void inputStreamConstructor () {
-    ByteArrayInputStream istr = new ByteArrayInputStream ("brand: Respironics\n".getBytes());
+    ByteArrayInputStream istr = new ByteArrayInputStream ("brand = Respironics\n".getBytes());
     PropertiesLookup subject = new PropertiesLookup (istr);
 
     String result = subject.valueFromName ("brand", PropertiesLookupTest.class);
