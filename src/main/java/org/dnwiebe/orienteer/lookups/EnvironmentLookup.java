@@ -21,11 +21,6 @@ public class EnvironmentLookup extends MapLookup {
 
   @Override
   public String nameFromFragments(List<String> fragments) {
-    StringBuilder buf = new StringBuilder ();
-    for (String fragment : fragments) {
-      if (buf.length () > 0) {buf.append ("_");}
-      buf.append (fragment.toUpperCase());
-    }
-    return buf.toString ();
+    return delimited (fragments, "_", UC_MAPPER);
   }
 }

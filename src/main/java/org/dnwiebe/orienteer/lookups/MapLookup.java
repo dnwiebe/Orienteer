@@ -25,11 +25,7 @@ public class MapLookup extends Lookup {
   }
 
   public String nameFromFragments(List<String> fragments) {
-    StringBuilder buf = new StringBuilder ();
-    for (String fragment : fragments) {
-      buf.append (capitalize (fragment.toLowerCase ()));
-    }
-    return buf.toString();
+    return delimited (fragments, "", CAP_MAPPER);
   }
 
   public String valueFromName(String name, Class singletonType) {

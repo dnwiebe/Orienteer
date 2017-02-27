@@ -25,12 +25,7 @@ public class CustomLookupExample {
 
     public String nameFromFragments(List<String> fragments) {
       // convert fragments to lower snake case
-      StringBuilder buf = new StringBuilder ();
-      for (String fragment : fragments) {
-        if (buf.length () > 0) {buf.append ("_");}
-        buf.append (fragment.toLowerCase ());
-      }
-      return buf.toString ();
+      return delimited (fragments, "_", LC_MAPPER);
     }
 
     public String valueFromName(String name, Class singletonType) {

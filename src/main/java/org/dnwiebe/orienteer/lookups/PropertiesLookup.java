@@ -56,12 +56,7 @@ public class PropertiesLookup extends Lookup {
   }
 
   public String nameFromFragments(List<String> fragments) {
-    StringBuilder buf = new StringBuilder ();
-    for (String fragment : fragments) {
-      if (buf.length () > 0) {buf.append (".");}
-      buf.append (fragment.toLowerCase());
-    }
-    return buf.toString ();
+    return delimited (fragments, ".", LC_MAPPER);
   }
 
   public String valueFromName(String name, Class singletonType) {

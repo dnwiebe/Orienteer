@@ -56,8 +56,28 @@ public abstract class Lookup {
    * @param string String to capitalize
    * @return Capitalized String
    */
-  protected String capitalize (String string) {
+  protected static String capitalize (String string) {
     if ((string == null) || (string.length () == 0)) {return string;}
     return Character.toUpperCase (string.charAt (0)) + string.substring (1);
+  }
+
+  protected interface Mapper {
+    String apply (String i);
+  }
+
+  protected static final Mapper NULL_MAPPER = new Mapper () {public String apply (String s) {return s;}};
+  protected static final Mapper LC_MAPPER = new Mapper () {public String apply (String s) {return s.toLowerCase ();}};
+  protected static final Mapper UC_MAPPER = new Mapper () {public String apply (String s) {return s.toUpperCase ();}};
+  protected static final Mapper CAP_MAPPER = new Mapper () {public String apply (String s) {
+    return capitalize (s.toLowerCase ());}
+  };
+
+  protected static String delimited (List<String> fragments, String delimiter, Mapper mapper) {
+    StringBuilder buf = new StringBuilder ();
+    for (String fragment: fragments) {
+      if (buf.length () > 0) {buf.append (delimiter);}
+      buf.append (mapper.apply (fragment));
+    }
+    return buf.toString ();
   }
 }

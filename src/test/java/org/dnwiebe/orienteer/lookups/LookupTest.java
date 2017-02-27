@@ -20,11 +20,6 @@ public class LookupTest {
     public String valueFromName(String name, Class singletonType) {
       throw new UnsupportedOperationException();
     }
-
-    @Override
-    public String capitalize (String string) {
-      return super.capitalize (string);
-    }
   }
 
   @Test
