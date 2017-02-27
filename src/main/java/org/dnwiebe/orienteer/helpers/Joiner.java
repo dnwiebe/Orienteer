@@ -32,4 +32,8 @@ public class Joiner {
     }
     return buf.toString ();
   }
+
+  public static String join (Iterable<String> elements, String delimiter) {
+    return join (elements, delimiter, NULL_MAPPER);
+  }
 }

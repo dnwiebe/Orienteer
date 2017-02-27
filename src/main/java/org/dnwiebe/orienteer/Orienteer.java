@@ -151,7 +151,7 @@ public class Orienteer {
       }
     }
     if (!problems.isEmpty ()) {
-      throw new IllegalStateException ("Couldn't retrieve configurations: " + join (problems, ", ", NULL_MAPPER));
+      throw new IllegalStateException ("Couldn't retrieve configurations: " + join (problems, ", "));
     }
   }
 

@@ -29,7 +29,7 @@ public class TestLookup extends Lookup {
   }
 
   public String nameFromFragments(List<String> fragments) {
-    return join (fragments, "", NULL_MAPPER);
+    return join (fragments, "");
   }
 
   public String valueFromName(String name, Class singletonType) {
