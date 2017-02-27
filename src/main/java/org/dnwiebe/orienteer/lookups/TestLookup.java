@@ -4,7 +4,8 @@ import org.dnwiebe.orienteer.helpers.MapLiteral;
 
 import java.util.List;
 import java.util.Map;
-import static org.dnwiebe.orienteer.helpers.Joiner.*;
+
+import static org.dnwiebe.orienteer.helpers.Joiner.join;
 
 /**
  * Created by dnwiebe on 2/18/17.

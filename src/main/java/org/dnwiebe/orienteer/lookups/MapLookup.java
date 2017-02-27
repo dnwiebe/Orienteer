@@ -2,7 +2,9 @@ package org.dnwiebe.orienteer.lookups;
 
 import java.util.List;
 import java.util.Map;
-import static org.dnwiebe.orienteer.helpers.Joiner.*;
+
+import static org.dnwiebe.orienteer.helpers.Joiner.CAP_MAPPER;
+import static org.dnwiebe.orienteer.helpers.Joiner.join;
 
 /**
  * Created by dnwiebe on 2/17/17.

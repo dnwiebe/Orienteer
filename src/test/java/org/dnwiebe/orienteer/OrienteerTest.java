@@ -12,10 +12,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
+import static org.dnwiebe.orienteer.helpers.Joiner.CLASS_MAPPER;
+import static org.dnwiebe.orienteer.helpers.Joiner.join;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.*;
-import static org.dnwiebe.orienteer.helpers.Joiner.*;
 
 /**
  * Created by dnwiebe on 2/17/17.

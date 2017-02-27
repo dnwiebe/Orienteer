@@ -12,9 +12,13 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
-import static org.dnwiebe.orienteer.helpers.Joiner.*;
+
+import static org.dnwiebe.orienteer.helpers.Joiner.CLASS_MAPPER;
+import static org.dnwiebe.orienteer.helpers.Joiner.join;
 
 /**
  * Created by dnwiebe on 2/17/17.
@@ -215,5 +219,4 @@ public class Orienteer {
       }
     }
   }
-
 }

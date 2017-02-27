@@ -8,8 +8,9 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static org.dnwiebe.orienteer.helpers.Joiner.LC_MAPPER;
+import static org.dnwiebe.orienteer.helpers.Joiner.join;
 import static org.junit.Assert.assertEquals;
-import static org.dnwiebe.orienteer.helpers.Joiner.*;
 
 /**
  * Created by dnwiebe on 2/18/17.

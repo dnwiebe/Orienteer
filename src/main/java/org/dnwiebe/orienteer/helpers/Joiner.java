@@ -1,7 +1,5 @@
 package org.dnwiebe.orienteer.helpers;
 
-import java.util.List;
-
 /**
  * Created by dnwiebe on 2/27/17.
  */

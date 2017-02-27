@@ -4,8 +4,8 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static org.dnwiebe.orienteer.helpers.Joiner.capitalize;
 import static org.junit.Assert.assertEquals;
-import static org.dnwiebe.orienteer.helpers.Joiner.*;
 
 /**
  * Created by dnwiebe on 2/17/17.

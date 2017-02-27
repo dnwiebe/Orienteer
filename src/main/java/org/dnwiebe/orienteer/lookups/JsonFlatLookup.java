@@ -4,7 +4,9 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.util.List;
 import java.util.Map;
-import static org.dnwiebe.orienteer.helpers.Joiner.*;
+
+import static org.dnwiebe.orienteer.helpers.Joiner.LC_MAPPER;
+import static org.dnwiebe.orienteer.helpers.Joiner.join;
 
 /**
  * Created by dnwiebe on 2/26/17.
