@@ -9,6 +9,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.dnwiebe.orienteer.helpers.Joiner.*;
 
 /**
  * Created by dnwiebe on 2/18/17.
@@ -25,7 +26,7 @@ public class CustomLookupExample {
 
     public String nameFromFragments(List<String> fragments) {
       // convert fragments to lower snake case
-      return delimited (fragments, "_", LC_MAPPER);
+      return join (fragments, "_", LC_MAPPER);
     }
 
     public String valueFromName(String name, Class singletonType) {

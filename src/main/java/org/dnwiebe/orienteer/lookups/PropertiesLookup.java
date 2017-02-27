@@ -3,6 +3,7 @@ package org.dnwiebe.orienteer.lookups;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Properties;
+import static org.dnwiebe.orienteer.helpers.Joiner.*;
 
 /**
  * Created by dnwiebe on 2/17/17.
@@ -56,7 +57,7 @@ public class PropertiesLookup extends Lookup {
   }
 
   public String nameFromFragments(List<String> fragments) {
-    return delimited (fragments, ".", LC_MAPPER);
+    return join (fragments, ".", LC_MAPPER);
   }
 
   public String valueFromName(String name, Class singletonType) {

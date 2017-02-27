@@ -2,9 +2,9 @@ package org.dnwiebe.orienteer.lookups;
 
 import org.dnwiebe.orienteer.helpers.MapLiteral;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import static org.dnwiebe.orienteer.helpers.Joiner.*;
 
 /**
  * Created by dnwiebe on 2/18/17.
@@ -29,7 +29,7 @@ public class TestLookup extends Lookup {
   }
 
   public String nameFromFragments(List<String> fragments) {
-    return delimited (fragments, "", NULL_MAPPER);
+    return join (fragments, "", NULL_MAPPER);
   }
 
   public String valueFromName(String name, Class singletonType) {

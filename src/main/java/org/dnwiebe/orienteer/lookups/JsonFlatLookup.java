@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.util.List;
 import java.util.Map;
+import static org.dnwiebe.orienteer.helpers.Joiner.*;
 
 /**
  * Created by dnwiebe on 2/26/17.
@@ -78,7 +79,7 @@ public class JsonFlatLookup extends JsonLookup {
   }
 
   public String nameFromFragments (List<String> fragments) {
-    return delimited (fragments, ".", LC_MAPPER);
+    return join (fragments, ".", LC_MAPPER);
   }
 
   public String valueFromName (String name, Class singletonType) {

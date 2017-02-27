@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.dnwiebe.orienteer.helpers.Joiner.*;
 
 /**
  * Created by dnwiebe on 2/17/17.
@@ -35,7 +36,7 @@ public class LookupTest {
   public void capitalizeWorksOnRegularString () {
     TameLookup subject = new TameLookup ();
 
-    String result = subject.capitalize ("wIBbLE");
+    String result = capitalize ("wIBbLE");
 
     assertEquals ("WIBbLE", result);
   }
@@ -44,7 +45,7 @@ public class LookupTest {
   public void capitalizeWorksOnAlreadyCapitalizedString () {
     TameLookup subject = new TameLookup ();
 
-    String result = subject.capitalize ("Wibble");
+    String result = capitalize ("Wibble");
 
     assertEquals ("Wibble", result);
   }
@@ -53,7 +54,7 @@ public class LookupTest {
   public void capitalizeWorksOnEmptyString () {
     TameLookup subject = new TameLookup ();
 
-    String result = subject.capitalize ("");
+    String result = capitalize ("");
 
     assertEquals ("", result);
   }
@@ -62,7 +63,7 @@ public class LookupTest {
   public void capitalizeWorksOnNullString () {
     TameLookup subject = new TameLookup ();
 
-    String result = subject.capitalize (null);
+    String result = capitalize (null);
 
     assertEquals (null, result);
   }

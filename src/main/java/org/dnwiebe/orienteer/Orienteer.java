@@ -14,6 +14,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.*;
 import java.util.logging.Logger;
+import static org.dnwiebe.orienteer.helpers.Joiner.*;
 
 /**
  * Created by dnwiebe on 2/17/17.
@@ -114,17 +115,11 @@ public class Orienteer {
 
   private void validateReturnType (Method method) {
     if (!converters.getTargetTypes ().contains (method.getReturnType())) {
-      StringBuilder buf = new StringBuilder();
-      for (Class type : converters.getTargetTypes()) {
-        if (buf.length() > 0) {
-          buf.append(", ");
-        }
-        buf.append(type.getName());
-      }
+      String typeNames = join (converters.getTargetTypes (), ", ", CLASS_MAPPER);
       throw new IllegalArgumentException("The " + method.getName() + " method of the " +
           method.getDeclaringClass().getName() +
           " interface returns type " + method.getReturnType ().getName () +
-          ". Methods on configuration interfaces must return one of the following types: " + buf.toString ()
+          ". Methods on configuration interfaces must return one of the following types: " + typeNames
       );
     }
   }
@@ -156,7 +151,7 @@ public class Orienteer {
       }
     }
     if (!problems.isEmpty ()) {
-      throw new IllegalStateException ("Couldn't retrieve configurations: " + join (problems));
+      throw new IllegalStateException ("Couldn't retrieve configurations: " + join (problems, ", ", NULL_MAPPER));
     }
   }
 
@@ -165,15 +160,6 @@ public class Orienteer {
     PrintWriter pw = new PrintWriter (sw);
     e.printStackTrace (pw);
     return sw.toString ();
-  }
-
-  private String join (List<String> list) {
-    StringBuilder buf = new StringBuilder ();
-    for (String string : list) {
-      if (buf.length () > 0) {buf.append (", ");}
-      buf.append (string);
-    }
-    return buf.toString ();
   }
 
   private static class ConfigurationHandler implements InvocationHandler {

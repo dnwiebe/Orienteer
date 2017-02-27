@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.*;
+import static org.dnwiebe.orienteer.helpers.Joiner.*;
 
 /**
  * Created by dnwiebe on 2/17/17.
@@ -64,14 +65,10 @@ public class OrienteerTest {
       fail ();
     }
     catch (IllegalArgumentException e) {
-      StringBuilder buf = new StringBuilder ();
-      for (Class type : converters.getTargetTypes()) {
-        if (buf.length () > 0) {buf.append (", ");}
-        buf.append (type.getName ());
-      }
+      String typeNames = join (converters.getTargetTypes (), ", ", CLASS_MAPPER);
       assertEquals ("The returnsBadType method of the " + MethodReturnsBadType.class.getName () + " interface " +
           "returns type " + OrienteerTest.class.getName () + ". Methods on configuration interfaces must return " +
-          "one of the following types: " + buf.toString (), e.getMessage ());
+          "one of the following types: " + typeNames, e.getMessage ());
     }
   }
 
